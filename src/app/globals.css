@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+/* Noto Sans KR — 로컬 번들(폐쇄망: 외부 폰트 CDN 미사용).
+   fontsource korean subset = 한글+라틴+숫자 포함(unicode-range 무제한). woff2 6굵기. */
+@font-face { font-family: "Noto Sans KR"; font-style: normal; font-display: swap; font-weight: 400; src: url("/fonts/NotoSansKR-400.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans KR"; font-style: normal; font-display: swap; font-weight: 500; src: url("/fonts/NotoSansKR-500.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans KR"; font-style: normal; font-display: swap; font-weight: 600; src: url("/fonts/NotoSansKR-600.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans KR"; font-style: normal; font-display: swap; font-weight: 700; src: url("/fonts/NotoSansKR-700.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans KR"; font-style: normal; font-display: swap; font-weight: 800; src: url("/fonts/NotoSansKR-800.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans KR"; font-style: normal; font-display: swap; font-weight: 900; src: url("/fonts/NotoSansKR-900.woff2") format("woff2"); }
+
+/* 모든 클릭 가능한 요소에 pointer 커서 */
+button, [role="button"], a, select, input[type="submit"], input[type="button"], input[type="checkbox"], input[type="radio"], label[for], summary, [onclick] {
+  cursor: pointer;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --brand-blue: #0054a6;
+  --brand-dark-blue: #003e7e;
+  --brand-gray-bg: #f3f5f9;
+  --brand-text: #111827;
+
+  /* ── 톤 B (소프트 데스크) 공통 디자인 토큰 — 전 패널 표준 (2026-06) ── */
+  --ax-accent: #0054a6;          /* 브랜드 블루 (브랜드/강조) */
+  --ax-accent-dark: #003e7e;
+  --ax-accent-bg: #eaf2fb;       /* 연한 강조 배경 */
+  --ax-accent-soft: #dceafa;     /* 칩 active 배경 */
+  --ax-accent-border: #cfe2f8;
+  --ax-page: #f3f7fc;            /* 패널 페이지 배경 */
+  --ax-card: #ffffff;            /* 카드 표면 */
+  --ax-border: #e9eff7;          /* 카드/입력 보더 */
+  --ax-border-soft: #eef3f9;     /* 옅은 구획선 */
+  --ax-text: #1f2937;
+  --ax-text-muted: #64748b;
+  --ax-text-hint: #94a3b8;
+  --ax-radius-sm: 10px;
+  --ax-radius: 12px;
+  --ax-radius-lg: 16px;
+  --ax-success: #0f6e56;
+  --ax-success-bg: #e1f5ee;
+  --ax-danger: #a32d2d;
+  --ax-danger-bg: #fcebeb;
+  --ax-warning: #854f0b;
+  --ax-warning-bg: #faeeda;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--brand-gray-bg);
+  color: var(--brand-text);
+  font-family: "Noto Sans KR", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("/fonts/MaterialSymbolsOutlined.ttf") format("truetype");
+}
+
+.shadow-soft {
+  box-shadow: 0 10px 40px -10px rgba(0, 84, 166, 0.08);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px -5px rgba(0, 84, 166, 0.1);
+}
+
+.glass-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-dark-blue) 100%);
+}
+
+/* main_portal.html 디자인 유지 */
+.launcher-card {
+  background: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.launcher-card:hover {
+  border-color: var(--brand-blue);
+  background: linear-gradient(145deg, #ffffff 0%, #f0f7ff 100%);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(0, 84, 166, 0.15);
+}
+.launcher-icon-bg {
+  transition: all 0.3s ease;
+}
+.launcher-card:hover .launcher-icon-bg {
+  transform: scale(1.1) rotate(-5deg);
+}
+.sidebar-link {
+  position: relative;
+  transition: all 0.2s ease;
+}
+.sidebar-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background-color: var(--brand-blue);
+  transition: height 0.2s ease;
+  border-radius: 0 4px 4px 0;
+}
+.sidebar-link:hover::before,
+.sidebar-link.active::before {
+  height: 70%;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* panel_sales.html (데스크톱 매출 패널) */
+:root {
+  --kb: #0054a6;
+  --kc: #02afd4;
+  --kr: #e74c3c;
+  --kg: #2ecc71;
+  --ky: #f39c12;
+  --panel-bg: #f0f2f5;
+}
+
+
+/* 매출 패널 PDF 인쇄용 */
+@media print {
+  @page { size: A4 portrait; margin: 8mm 10mm; }
+  body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 11px !important; }
+  nav, header, button, select { display: none !important; }
+  .min-h-screen { min-height: auto !important; }
+  .shadow-sm, .shadow-soft { box-shadow: none !important; }
+  .rounded-xl, .rounded-2xl { break-inside: avoid; }
+  canvas { max-height: 180px !important; }
+  /* 패딩/갭 축소로 밀도 높이기 */
+  .p-5, .p-6 { padding: 10px !important; }
+  .sm\:p-6 { padding: 10px !important; }
+  .gap-4, .gap-5, .gap-6 { gap: 8px !important; }
+  .mb-3, .mb-4 { margin-bottom: 4px !important; }
+  /* 그리드 2열 유지 */
+  .lg\:col-span-2 { grid-column: span 2 !important; }
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* panel_law.html (데스크톱 법무 패널) */
+.panel-knowledge-primary {
+  color: #136dec;
+}
+.panel-knowledge-primary-bg {
+  background-color: #136dec;
+}
+.panel-knowledge-primary-dark {
+  background-color: #0b5ed7;
+}
+.panel-knowledge-primary-light {
+  background-color: #e8f1fd;
+}
+.panel-knowledge-bg {
+  background-color: #f6f7f8;
+}
+.sl-knowledge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.sl-knowledge:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+.sl-knowledge.active {
+  background: rgba(19, 109, 236, 0.08);
+  color: #136dec;
+  font-weight: 700;
+}
+.card-hover-knowledge:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* ── AX Playground 메인 — 레이어 건물 호버 효과 ───────────── */
+/* 배경 위에 절대배치된 각 건물(투명 PNG). 평소엔 배경에 녹아있고,
+   호버/포커스 시 그 건물만 노란 조명 + 살짝 떠오름(float). 클릭 즉시 이동. */
+.axp-building {
+  position: absolute;
+  z-index: 10;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  transform-origin: center bottom;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+.axp-building > img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+/* 라벨 카드 — 번호 배지 + 건물명 + 설명, 건물 위에 항상 표시 */
+.axp-building-label {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  margin-bottom: -16px; /* 위로 띄우지 않고 건물 상단에 살짝 겹치게(위 건물 침범 방지) */
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 13px 5px 6px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 2px solid #d4d4d8; /* 색상은 인라인 style(테마색)이 override */
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.18);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 30;
+}
+/* 성(1번)은 라벨을 건물 하단에 — 상단은 타이틀/전광판 영역 확보 */
+.axp-label-bottom {
+  top: 84%; /* 성 하단(분수 가림) 대신 전광판 바로 아래에 배치 */
+  bottom: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.axp-no {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85vw;
+  height: 1.85vw;
+  min-width: 25px;
+  min-height: 25px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1vw;
+}
+.axp-label-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.18;
+}
+.axp-label-title {
+  font-weight: 800;
+  font-size: 0.98vw;
+}
+.axp-label-desc {
+  font-size: 0.72vw;
+  color: #6b7280;
+}
+.axp-building-active {
+  z-index: 25;
+  transform: translateY(-1.4%) scale(1.05);
+  filter:
+    drop-shadow(0 0 6px rgba(255, 225, 90, 1))
+    drop-shadow(0 0 18px rgba(255, 180, 30, 0.9))
+    drop-shadow(0 0 38px rgba(255, 140, 0, 0.6));
+  animation: axpFloat 1.6s ease-in-out infinite;
+}
+@keyframes axpFloat {
+  0%, 100% { transform: translateY(-1.2%) scale(1.045); }
+  50%      { transform: translateY(-3.0%) scale(1.065); }
+}
+
+/* 패널 진입 스플래시(타이틀) 모달 — 등장 애니메이션 */
+@keyframes axpSplashIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes axpLogoPop  { 0% { opacity: 0; transform: scale(.5); } 60% { transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes axpFadeUp   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes axpBar      { from { width: 0; } to { width: 100%; } }
+.axp-splash      { animation: axpSplashIn .45s cubic-bezier(.2,.7,.2,1) both; }
+.axp-splash-logo { animation: axpLogoPop .6s cubic-bezier(.2,.8,.2,1) both .1s; }
+.axp-splash-t    { animation: axpFadeUp .5s both .25s; }
+.axp-splash-i    { animation: axpFadeUp .5s both .35s; }
+.axp-splash-s    { animation: axpFadeUp .5s both .45s; }
+.axp-splash-b    { animation: axpFadeUp .5s both .55s; }
+.axp-splash-bar  { animation: axpBar var(--axp-splash-ms, 3500ms) linear both; }
+@media (prefers-reduced-motion: reduce) {
+  .axp-splash, .axp-splash-logo, .axp-splash-t, .axp-splash-i, .axp-splash-s, .axp-splash-b { animation: none; }
+}
+
+/* 광고심의 PDF 저장 — .ax-print-area 리포트만 인쇄(:has로 해당 화면에만 적용, 타 페이지 무영향) */
+@media print {
+  body:has(.ax-print-area) * { visibility: hidden !important; }
+  body:has(.ax-print-area) .ax-print-area,
+  body:has(.ax-print-area) .ax-print-area * { visibility: visible !important; }
+  .ax-print-area { position: absolute !important; left: 0; top: 0; width: 100%; padding: 7mm; }
+}
+
+/* AI 면책문구 반짝임(shimmer) — 분석 버튼 로딩 시 흰 글자 위로 밝은 띠가 흐른다 */
+@keyframes axpShimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+.axp-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,.45) 25%, #ffffff 50%, rgba(255,255,255,.45) 75%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: axpShimmer 2.2s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) { .axp-shimmer { animation: none; -webkit-text-fill-color: rgba(255,255,255,.85); color: rgba(255,255,255,.85); } }

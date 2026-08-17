@@ -1,0 +1,261 @@
+#!/usr/bin/env node
+// Unified CLI for korea100studio boards: render / audit / validate / motion / check.
+
+import fs from "node:fs";
+import path from "node:path";
+
+import { validateBoard, checkReferentialIntegrity } from "./lib/validate.mjs";
+import { renderBoardSvg } from "./lib/render-svg.mjs";
+import { computeComposition, budgetViolations } from "./lib/composition.mjs";
+import { buildMotionSvg } from "./lib/motion.mjs";
+import { rasterize, rasterizerAvailable } from "./lib/rasterize.mjs";
+
+const USAGE = `Usage: korea100studio <command> <board.json> [options]
+
+Commands:
+  render <board.json> [--out f.svg] [--png] [--profile p]   Render a board to SVG (and optionally PNG)
+  audit <board.json> [--json] [--profile p]                 Print composition score and key metrics
+  validate <board.json> [--strict] [--profile p]             Validate schema and composition budgets
+  motion <board.json> [--out f.svg] [--profile p]  Render an animated (motion) SVG
+  check <file.svg>                                           Sanity-check that a file is a well-formed SVG
+`;
+
+// --- tiny arg parser -------------------------------------------------------
+// argv (after the subcommand) is: <boardPath> [--flag value|--boolFlag]...
+function parseArgs(argv) {
+  const positional = [];
+  const flags = {};
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg.startsWith("--")) {
+      const key = arg.slice(2);
+      const next = argv[i + 1];
+      if (next !== undefined && !next.startsWith("--")) {
+        flags[key] = next;
+        i++;
+      } else {
+        flags[key] = true;
+      }
+    } else {
+      positional.push(arg);
+    }
+  }
+  return { positional, flags };
+}
+
+function readBoard(boardPath) {
+  if (!boardPath) {
+    console.error("error: no board file given");
+    process.exit(2);
+  }
+  let raw;
+  try {
+    raw = fs.readFileSync(boardPath, "utf8");
+  } catch (err) {
+    console.error(`error: cannot read ${boardPath}: ${err.message}`);
+    process.exit(2);
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error(`error: ${boardPath} is not valid JSON: ${err.message}`);
+    process.exit(2);
+  }
+}
+
+function resolveProfile(flags, board) {
+  return flags.profile || board.profile || "default";
+}
+
+// Schema + referential-integrity gate. Prints friendly messages and exits 2 on
+// any problem, so authors see "node N3 references lane 'Finances'..." rather
+// than a raw layout stack trace. Returns on success.
+function assertBoardValid(board, boardPath) {
+  const { valid, errors } = validateBoard(board);
+  if (!valid) {
+    console.error(`error: ${boardPath} is not a valid board:`);
+    for (const err of errors) console.error(`  ${err.instancePath || "/"} ${err.message}`);
+    process.exit(2);
+  }
+  const problems = checkReferentialIntegrity(board);
+  if (problems.length) {
+    console.error(`error: ${boardPath} has reference problems:`);
+    for (const p of problems) console.error(`  ${p}`);
+    process.exit(2);
+  }
+}
+
+// --- subcommands -------------------------------------------------------
+
+function cmdRender(argv) {
+  const { positional, flags } = parseArgs(argv);
+  const boardPath = positional[0];
+  const board = readBoard(boardPath);
+  assertBoardValid(board, boardPath);
+
+  const profile = resolveProfile(flags, board);
+  let svg;
+  try {
+    svg = renderBoardSvg(board, { profile });
+  } catch (err) {
+    console.error(`error: ${String(err.message).split("\n")[0]}`);
+    process.exit(1);
+  }
+
+  const outSvg = flags.out || `${path.basename(boardPath, path.extname(boardPath))}.svg`;
+  fs.writeFileSync(outSvg, svg);
+  console.log(outSvg);
+
+  if (flags.png) {
+    const outPng = outSvg.replace(/\.svg$/, ".png");
+    if (!rasterizerAvailable()) {
+      console.error("Warning: no PNG rasterizer available (install librsvg or cairosvg); skipping PNG.");
+    } else {
+      const result = rasterize(outSvg, outPng);
+      if (result.ok === false) {
+        console.error(`Warning: PNG rasterization failed: ${result.reason}`);
+      } else {
+        console.log(outPng);
+      }
+    }
+  }
+}
+
+function cmdAudit(argv) {
+  const { positional, flags } = parseArgs(argv);
+  const boardPath = positional[0];
+  const board = readBoard(boardPath);
+  assertBoardValid(board, boardPath);
+  const profile = resolveProfile(flags, board);
+
+  let result;
+  try {
+    result = computeComposition(board, profile);
+  } catch (err) {
+    console.error(`error: ${String(err.message).split("\n")[0]}`);
+    process.exit(1);
+  }
+  const m = result.metrics;
+  if (flags.json) {
+    console.log(
+      JSON.stringify(
+        { name: result.name, score: result.score, metrics: m, violations: result.violations },
+        null,
+        2
+      )
+    );
+    return;
+  }
+  console.log(`Board: ${result.name}`);
+  console.log(`score: ${result.score}`);
+  console.log(`  nodePiercings: ${m.nodePiercings}`);
+  console.log(`  crossings: ${m.crossings}`);
+  console.log(`  bendsPerEdgeMax: ${m.bendsPerEdgeMax}`);
+  console.log(`  routeStretchMax: ${m.routeStretchMax}`);
+  if (result.violations.length) {
+    console.log(`violations: ${result.violations.join(", ")}`);
+  }
+}
+
+function cmdValidate(argv) {
+  const { positional, flags } = parseArgs(argv);
+  const boardPath = positional[0];
+  const board = readBoard(boardPath);
+
+  assertBoardValid(board, boardPath);
+
+  const profile = resolveProfile(flags, board);
+
+  try {
+    const result = computeComposition(board, profile);
+    const violations = budgetViolations(result.metrics);
+
+    if (flags.strict && violations.length) {
+      console.error(`Budget violations for ${boardPath}:`);
+      for (const v of violations) console.error(`  ${v}`);
+      process.exit(1);
+    }
+
+    console.log(`OK: ${boardPath} is schema-valid (score ${result.score})`);
+    if (violations.length) {
+      console.log(`  note: ${violations.length} budget violation(s) (use --strict to fail on these)`);
+    }
+    process.exit(0);
+  } catch (err) {
+    console.error(`Error during layout/render: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+function cmdMotion(argv) {
+  const { positional, flags } = parseArgs(argv);
+  const boardPath = positional[0];
+  const board = readBoard(boardPath);
+
+  assertBoardValid(board, boardPath);
+
+  const profile = resolveProfile(flags, board);
+  // The motion SVG is always self-contained: the board is rendered inline, so
+  // there is no external image dependency to embed.
+  let svg;
+  try {
+    svg = buildMotionSvg(board, { profile });
+  } catch (err) {
+    console.error(`error: ${String(err.message).split("\n")[0]}`);
+    process.exit(1);
+  }
+
+  const outSvg = flags.out || `${path.basename(boardPath, path.extname(boardPath))}.motion.svg`;
+  fs.writeFileSync(outSvg, svg);
+  console.log(outSvg);
+}
+
+function cmdCheck(argv) {
+  const { positional } = parseArgs(argv);
+  const filePath = positional[0];
+  const content = fs.readFileSync(filePath, "utf8").trim();
+  if (content.startsWith("<svg") && content.endsWith("</svg>")) {
+    console.log("OK");
+  } else {
+    console.error(`Not a well-formed SVG: ${filePath}`);
+    process.exit(1);
+  }
+}
+
+// --- main -------------------------------------------------------
+
+function main() {
+  const [command, ...rest] = process.argv.slice(2);
+
+  // An explicit help request succeeds (exit 0) and prints to stdout;
+  // a missing or unknown command is a usage error (exit 2) on stderr.
+  if (command === undefined || command === "help" || command === "--help" || command === "-h") {
+    console.log(USAGE);
+    process.exit(0);
+  }
+
+  if (command === "--version" || command === "-v" || command === "version") {
+    const pkg = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+    console.log(pkg.version);
+    process.exit(0);
+  }
+
+  switch (command) {
+    case "render":
+      return cmdRender(rest);
+    case "audit":
+      return cmdAudit(rest);
+    case "validate":
+      return cmdValidate(rest);
+    case "motion":
+      return cmdMotion(rest);
+    case "check":
+      return cmdCheck(rest);
+    default:
+      console.error(`error: unknown command '${command}'\n`);
+      console.error(USAGE);
+      process.exit(2);
+  }
+}
+
+main();

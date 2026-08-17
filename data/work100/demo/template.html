@@ -1,0 +1,156 @@
+<meta charset="utf-8">
+<title>업무 무한성 — 업무지도 데모</title>
+<style>
+:root{
+  --bg:#06070b; --panel:#0d1017cc; --panel2:#12161fee; --line:#2a3040; --ink:#e8e4da; --ink2:#a8a294; --ink3:#6d6a60;
+  --amber:#e0a04a; --amber2:#e8c07a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);
+  font:14px/1.6 "Apple SD Gothic Neo","Pretendard","Malgun Gothic",system-ui,sans-serif}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+/* ── 상단 바 ── */
+#top{position:fixed;top:0;left:0;right:0;display:flex;gap:12px;align-items:center;padding:12px 16px;
+  background:linear-gradient(180deg,#06070bd8,#06070b00);z-index:10;flex-wrap:wrap}
+#logo{font-weight:800;font-size:1.02rem;letter-spacing:.02em}
+#logo small{color:var(--amber);font-weight:600;margin-left:8px;font-size:.72rem;border:1px solid #e0a04a55;border-radius:20px;padding:1px 8px}
+#seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+#seg button{background:transparent;border:0;color:var(--ink2);padding:6px 14px;font-size:.82rem;cursor:pointer;font-family:inherit}
+#seg button.on{background:var(--amber);color:#161006;font-weight:700}
+#q{background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--ink);
+  padding:7px 12px;font-size:.85rem;width:220px;outline:none;font-family:inherit}
+#q:focus{border-color:var(--amber)}
+#chips{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{background:var(--panel);border:1px solid var(--line);border-radius:20px;color:var(--ink2);
+  padding:4px 12px;font-size:.78rem;cursor:pointer;font-family:inherit}
+.fchip.on{border-color:var(--h,var(--amber));color:var(--h,var(--amber));font-weight:700}
+/* ── 클러스터 라벨·툴팁 ── */
+.clabel{position:fixed;transform:translate(-50%,-50%);pointer-events:none;font-weight:800;font-size:.92rem;
+  text-shadow:0 0 14px #000,0 0 4px #000;letter-spacing:.04em;z-index:5}
+.clabel small{display:block;text-align:center;color:var(--ink3);font-weight:500;font-size:.68rem}
+#tip{position:fixed;pointer-events:none;background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  padding:5px 10px;font-size:.8rem;opacity:0;transition:opacity .12s;z-index:20;white-space:nowrap}
+#tip.show{opacity:1}
+/* ── 정보 카드 ── */
+#card{position:fixed;top:70px;right:16px;width:330px;max-width:calc(100vw - 32px);background:var(--panel2);
+  border:1px solid var(--line);border-radius:12px;padding:18px;z-index:15;backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transform:translateX(12px);transition:all .22s}
+#card.show{opacity:1;pointer-events:auto;transform:none}
+#cardClose{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--ink3);font-size:1.1rem;cursor:pointer}
+#cardDept{display:inline-block;border-radius:20px;padding:2px 10px;font-size:.72rem;font-weight:700;margin-bottom:8px}
+#cardName{font-size:1.12rem;font-weight:800;margin:0 0 6px}
+#cardDesc{color:var(--ink2);font-size:.84rem;margin:0 0 12px}
+#card h4{font-size:.74rem;color:var(--ink3);letter-spacing:.06em;margin:12px 0 6px;text-transform:uppercase}
+#cardSteps{margin:0;padding-left:18px;font-size:.84rem;color:var(--ink)}
+#cardSteps li{margin-bottom:3px}
+#cardRegs{display:flex;gap:6px;flex-wrap:wrap}
+.chip{background:#e0a04a1a;border:1px solid #e0a04a44;color:var(--amber2);border-radius:6px;
+  padding:3px 9px;font-size:.78rem;cursor:pointer;font-family:inherit}
+#cardBtns{display:flex;gap:8px;margin-top:14px}
+#cardBtns button{flex:1;background:var(--amber);border:0;border-radius:8px;color:#161006;font-weight:700;
+  padding:8px 0;font-size:.82rem;cursor:pointer;font-family:inherit}
+#cardBtns #btnLaw{background:transparent;border:1px solid var(--line);color:var(--ink)}
+/* ── 키워드검색 데모 패널 ── */
+#kwPanel{position:fixed;inset:60px 16px 16px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;
+  z-index:14;padding:18px;overflow:auto;display:none;backdrop-filter:blur(8px)}
+#kwPanel.show{display:block}
+#kwPanel h3{margin:0 0 4px;font-size:1rem}
+#kwPanel p{color:var(--ink3);font-size:.8rem;margin:0 0 14px}
+.kwRow{display:flex;gap:10px;align-items:baseline;width:100%;text-align:left;background:transparent;
+  border:0;border-bottom:1px solid var(--line);padding:9px 4px;cursor:pointer;color:var(--ink);font-family:inherit;font-size:.86rem;flex-wrap:wrap}
+.kwRow:hover{background:#ffffff08}
+.kwDept{font-size:.74rem;font-weight:700}
+.kwRegs{color:var(--ink3);font-size:.76rem}
+/* ── 업무 온톨로지 패널 + 전체화면 보드 ── */
+#bmodal{position:fixed;inset:0;background:#00000090;z-index:40;display:none;align-items:center;justify-content:center}
+#bmodal.show{display:flex}
+#bwrap{width:min(560px,94vw);max-height:88vh;background:var(--panel2);border:1px solid var(--line);border-radius:14px;
+  padding:22px;overflow-y:auto;position:relative}
+#bwrap h3{margin:6px 0 4px;font-size:1.15rem}
+#bwrap .bdesc{color:var(--ink2);font-size:.84rem;margin:0 0 14px}
+#bwrap h4{font-size:.72rem;color:var(--ink3);letter-spacing:.06em;margin:16px 0 6px;text-transform:uppercase}
+.bfact{display:flex;gap:8px;font-size:.84rem;margin-bottom:4px}
+.bfact b{color:var(--amber2);flex:none}
+.bref{display:flex;gap:6px;align-items:baseline;border-bottom:1px solid var(--line);padding:7px 2px;font-size:.8rem;flex-wrap:wrap}
+.bref .basis{font-size:.68rem;border-radius:4px;padding:1px 6px;background:#e0a04a22;color:var(--amber2);font-weight:700}
+.bref .ext{font-size:.68rem;border-radius:4px;padding:1px 6px;background:#7aa3d922;color:#9db8dd;font-weight:700}
+#bDetail{width:100%;margin-top:16px;background:var(--amber);border:0;border-radius:8px;color:#161006;font-weight:800;
+  padding:11px 0;font-size:.9rem;cursor:pointer;font-family:inherit}
+#bbtns{display:flex;gap:8px;margin-top:8px}
+#bbtns button{flex:1;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--ink);
+  padding:8px 0;font-size:.8rem;cursor:pointer;font-family:inherit}
+#bclose{position:absolute;top:12px;right:14px;background:none;border:0;color:var(--ink3);font-size:1.1rem;cursor:pointer}
+/* 전체화면 보드 */
+#bboard{position:fixed;inset:0;background:#100b07;z-index:45;display:none;flex-direction:column}
+#bboard.show{display:flex}
+#bbar{display:flex;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);flex:none}
+#bbar .bt{font-weight:800;font-size:.95rem;margin-right:auto}
+#bbar button{background:var(--panel);border:1px solid var(--line);color:var(--ink);font-size:.8rem;cursor:pointer;
+  border-radius:7px;padding:6px 12px;font-family:inherit}
+#bbar #bFold{background:var(--amber);color:#161006;border:0;font-weight:700}
+#bleft{flex:1;background:#f6efdf;overflow:auto}
+#bleft svg{display:block;height:auto;margin:0 auto}
+/* ── 하단 ── */
+#legend{position:fixed;left:16px;bottom:14px;display:flex;gap:10px;flex-wrap:wrap;z-index:10;font-size:.74rem;color:var(--ink2)}
+#hint{position:fixed;right:16px;bottom:14px;color:var(--ink3);font-size:.74rem;z-index:10}
+#toast{position:fixed;left:50%;bottom:52px;transform:translate(-50%,10px);background:var(--panel2);
+  border:1px solid var(--amber);border-radius:8px;padding:9px 16px;font-size:.84rem;opacity:0;transition:all .25s;z-index:30}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:720px){#q{width:130px} #card{top:auto;bottom:60px}}
+</style>
+<canvas id="gl"></canvas>
+<div id="top">
+  <div id="logo">업무 무한성<small>가짜 데이터 데모</small></div>
+  <div id="seg"><button data-v="gal" class="on">업무지식탐색</button><button data-v="kw">검색</button></div>
+  <input id="q" placeholder="업무·규정 검색 (예: 수의계약)" autocomplete="off">
+  <div id="chips"></div>
+</div>
+<div id="labels"></div>
+<div id="tip"></div>
+<div id="card">
+  <button id="cardClose">✕</button>
+  <span id="cardDept"></span>
+  <h3 id="cardName"></h3>
+  <p id="cardDesc"></p>
+  <h4>절차</h4><ol id="cardSteps"></ol>
+  <h4>근거 규정</h4><div id="cardRegs"></div>
+  <div id="cardBtns"><button id="btnLaw">근거 조문 보기</button><button id="btnAsk">지식검색에 질문</button></div>
+</div>
+<div id="kwPanel">
+  <h3>검색 (기존 AI지식검색 UI 자리 — 데모)</h3>
+  <p>토글 콘셉트 시연용입니다. 행을 클릭하면 시각화 뷰에서 해당 업무로 이동합니다.</p>
+  <div id="kwList"></div>
+</div>
+<div id="legend"></div>
+<div id="hint">드래그 회전 · 휠 줌 · 큐브 클릭 선택</div>
+<div id="toast"></div>
+<div id="bmodal">
+  <div id="bwrap">
+    <button id="bclose">✕</button>
+    <span id="bDept" class="chip" style="background:#d97a4a33;color:#d97a4a">재무·계약</span>
+    <h3 id="bName"></h3>
+    <p class="bdesc" id="bDesc"></p>
+    <h4>온톨로지</h4>
+    <div class="bfact"><b>소관</b><span id="bOwn"></span></div>
+    <div class="bfact"><b>전결</b><span id="bAppr"></span></div>
+    <h4>근거 사규 (업무근거 엣지에서 생성)</h4>
+    <div id="bRefs"></div>
+    <button id="bDetail">상세 업무흐름 보기</button>
+    <div id="bbtns"><button id="bLaw">근거 조문 보기</button><button id="bAsk">지식검색에 질문</button></div>
+  </div>
+</div>
+<div id="bboard">
+  <div id="bbar">
+    <span class="bt" id="bbTitle">수의계약 체결 — 업무흐름</span>
+    <button id="bmotion">▶ 흐름 재생</button>
+    <button id="bzOut">－</button><button id="bzIn">＋</button><button id="bzFit">맞춤</button>
+    <button id="bFold">접기 ↩</button>
+  </div>
+  <div id="bleft">
+    <div id="bsvgStatic">__BOARDSVG__</div>
+    <div id="bsvgMotion" style="display:none">__BOARDMOTION__</div>
+  </div>
+</div>
+<script>window.PILOT = __PILOT__;</script>
+<script>__THREE__</script>
+<script>__APP__</script>

@@ -1,0 +1,16 @@
+# 로컬 전용 MongoDB (Atlas 없이 실행할 때)
+# 실행: docker compose up -d
+# MONGODB_URI=mongodb://127.0.0.1:27017/axportal
+
+services:
+  mongo:
+    image: mongo:7
+    # 호스트 루프백에만 바인딩 — 내부망 다른 PC에서도 직접 접속 불가.
+    # 앱(Next.js)이 같은 서버에서 127.0.0.1로만 접근.
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - axportal_mongo_data:/data/db
+
+volumes:
+  axportal_mongo_data:

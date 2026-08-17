@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="2400" viewBox="0 0 1520 2400">
+<defs>
+      <filter id="card-shadow" x="-20%" y="-25%" width="140%" height="160%">
+        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#12271e" flood-opacity="0.10"/>
+      </filter>
+      <marker id="arrow-sequence" markerWidth="17" markerHeight="13" refX="15" refY="6.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L16,6.5 L1,12 Z" fill="#53675d" stroke="#ffffff" stroke-width="1.3" stroke-linejoin="round"/>
+  </marker>
+      <marker id="arrow-message" markerWidth="17" markerHeight="13" refX="15" refY="6.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L16,6.5 L1,12 Z" fill="#0f8a65" stroke="#ffffff" stroke-width="1.3" stroke-linejoin="round"/>
+  </marker>
+      <marker id="arrow-loop" markerWidth="17" markerHeight="13" refX="15" refY="6.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L16,6.5 L1,12 Z" fill="#3478db" stroke="#ffffff" stroke-width="1.3" stroke-linejoin="round"/>
+  </marker>
+      <style>
+        text { font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans CJK KR", "Noto Sans KR", sans-serif; }
+        .mono { font-family: "SFMono-Regular", "Menlo", monospace; }
+      </style>
+    </defs>
+<rect width="1520" height="2400" fill="#ffffff"/>
+<rect x="0" y="0" width="1520" height="240" fill="#07150f"/>
+<rect x="0" y="0" width="1520" height="9" fill="#18a87b"/>
+
+    <text x="1480" y="45" text-anchor="end" font-size="15" font-weight="700" fill="#8fa299">업무 3 · 담당 2 · 단계 3</text>
+    <text x="40" y="132" font-size="44" font-weight="850" fill="#ffffff">소액 수의계약 체결</text>
+    <text x="40" y="174" font-size="19" font-weight="520" fill="#b7c7bf">경영지원처 업무 절차(가상 샘플)</text>
+    
+  
+<rect x="38" y="260" width="1444" height="1940" rx="10" fill="#ffffff" stroke="#b8c7bf" stroke-width="2"/>
+<rect x="38" y="260" width="190" height="100" rx="10" fill="#eaf2ee"/>
+<text x="58" y="299" font-size="19" font-weight="800" fill="#17231d">단계 ↓</text>
+<text x="58" y="332" font-size="17" font-weight="650" fill="#68776f">담당 →</text>
+<rect x="38" y="360" width="1444" height="613.3" fill="#fbfcfb"/>
+<rect x="38" y="360" width="190" height="613.3" fill="#e4f5ed"/>
+<text x="58" y="392" class="mono" font-size="18" font-weight="800" fill="#7a3c0c"></text>
+<text x="58" y="425" font-size="19" font-weight="800" fill="#7a3c0c"><tspan x="58" dy="0">G0_방법결정</tspan></text>
+<rect x="38" y="973.3" width="1444" height="613.3" fill="#f5f8f6"/>
+<rect x="38" y="973.3" width="190" height="613.3" fill="#eef3f0"/>
+<text x="58" y="1005.3" class="mono" font-size="18" font-weight="800" fill="#53645b"></text>
+<text x="58" y="1038.3" font-size="19" font-weight="800" fill="#53645b"><tspan x="58" dy="0">G1_견적</tspan></text>
+<rect x="38" y="1586.7" width="1444" height="613.3" fill="#bd9e86"/>
+<rect x="38" y="1586.7" width="190" height="613.3" fill="#7a3c0c"/>
+<text x="58" y="1618.7" class="mono" font-size="18" font-weight="800" fill="#ffe9c9"></text>
+<text x="58" y="1651.7" font-size="19" font-weight="800" fill="#ffe9c9"><tspan x="58" dy="0">G2_체결</tspan></text>
+<rect x="228" y="260" width="627" height="100" fill="#f7faf8"/>
+<rect x="228" y="260" width="627" height="7" fill="#0f9f72"/>
+<text x="248" y="299" font-size="23" font-weight="800" fill="#17231d">경영지원처</text>
+<text x="248" y="329" font-size="13.5" font-weight="600" fill="#68776f"><tspan x="248" dy="0">경영지원처</tspan></text>
+<rect x="855" y="260" width="627" height="100" fill="#f7faf8"/>
+<rect x="855" y="260" width="627" height="7" fill="#3b82f6"/>
+<text x="875" y="299" font-size="23" font-weight="800" fill="#17231d">팀장</text>
+<text x="875" y="329" font-size="13.5" font-weight="600" fill="#68776f"><tspan x="875" dy="0">팀장</tspan></text>
+<line x1="228" y1="260" x2="228" y2="2200" stroke="#d3dcd7" stroke-width="1.5"/>
+<line x1="855" y1="260" x2="855" y2="2200" stroke="#d3dcd7" stroke-width="1.5"/>
+<line x1="1482" y1="260" x2="1482" y2="2200" stroke="#d3dcd7" stroke-width="1.5"/>
+<line x1="38" y1="360" x2="1482" y2="360" stroke="#b8c7bf" stroke-width="2"/>
+<line x1="38" y1="360" x2="1482" y2="360" stroke="#c8d3cd" stroke-width="1.5"/>
+<line x1="38" y1="973.3" x2="1482" y2="973.3" stroke="#c8d3cd" stroke-width="1.5"/>
+<line x1="38" y1="1586.7" x2="1482" y2="1586.7" stroke="#c8d3cd" stroke-width="1.5"/>
+<line x1="38" y1="2200" x2="1482" y2="2200" stroke="#b8c7bf" stroke-width="2"/>
+<path d="M 541.5 727.7 V 961.3 H 531.5 V 1211" fill="none" stroke="#ffffff" stroke-width="7.4"  stroke-linecap="round" stroke-linejoin="round" opacity="0.94"/>
+<path d="M 541.5 727.7 V 961.3 H 531.5 V 1211" fill="none" stroke="#53675d" stroke-width="3.4"  marker-end="url(#arrow-sequence)" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>
+<path d="M 551.5 1341 V 1574.7 H 1168.5 V 1824.3" fill="none" stroke="#ffffff" stroke-width="7.4"  stroke-linecap="round" stroke-linejoin="round" opacity="0.94"/>
+<path d="M 551.5 1341 V 1574.7 H 1168.5 V 1824.3" fill="none" stroke="#53675d" stroke-width="3.4"  marker-end="url(#arrow-sequence)" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>
+
+    <g filter="url(#card-shadow)">
+      <rect x="351.5" y="601.7" width="380" height="130" rx="11" fill="none" stroke="#b4540a" stroke-width="2.2" stroke-dasharray="7 5"/>
+      <rect x="355.5" y="605.7" width="372" height="122" rx="8" fill="#f9edd8" stroke="#c98a3a" stroke-width="2.3"/>
+      <rect x="355.5" y="605.7" width="6" height="122" rx="3" fill="#c98a3a"/>
+      <text x="370.5" y="625.7" class="mono" font-size="15.5" font-weight="750" fill="#8a5a1e">n1</text>
+      <text x="422.5" y="625.7" font-size="15" font-weight="800" fill="#b4540a">사규 · 「위임전결규정(샘플)」 제7조</text>
+      <rect x="649.5" y="612.7" width="68" height="31" rx="5" fill="#c98a3a" opacity="0.14"/>
+      <text x="683.5" y="634.7" text-anchor="middle" font-size="15.5" font-weight="800" fill="#4a2f10">선행</text>
+      <text x="370.5" y="677.7" font-size="23" font-weight="800" fill="#4a2f10"><tspan x="370.5" dy="0">계약 방법 결정</tspan></text>
+      <text x="370.5" y="718.7" font-size="16.5" font-weight="650" fill="#8a5a1e">추정가격 산정 후 금액 구간 확인</text>
+    </g>
+  
+
+    <g filter="url(#card-shadow)">
+      
+      <rect x="355.5" y="1219" width="372" height="122" rx="8" fill="#fdf8ee" stroke="#cbb894" stroke-width="2.3"/>
+      <rect x="355.5" y="1219" width="6" height="122" rx="3" fill="#cbb894"/>
+      <text x="370.5" y="1239" class="mono" font-size="15.5" font-weight="750" fill="#7a6b52">n2</text>
+      
+      <rect x="649.5" y="1226" width="68" height="31" rx="5" fill="#cbb894" opacity="0.14"/>
+      <text x="683.5" y="1248" text-anchor="middle" font-size="15.5" font-weight="800" fill="#2a2117">후속</text>
+      <text x="370.5" y="1291" font-size="23" font-weight="800" fill="#2a2117"><tspan x="370.5" dy="0">견적 징구·심사</tspan></text>
+      <text x="370.5" y="1332" font-size="16.5" font-weight="650" fill="#7a6b52">2인 이상 견적 비교</text>
+    </g>
+  
+
+    <g filter="url(#card-shadow)">
+      <rect x="978.5" y="1828.3" width="380" height="130" rx="11" fill="none" stroke="#b4540a" stroke-width="2.2" stroke-dasharray="7 5"/>
+      <rect x="982.5" y="1832.3" width="372" height="122" rx="8" fill="#7a3c0c" stroke="#7a3c0c" stroke-width="2.3"/>
+      <rect x="982.5" y="1832.3" width="6" height="122" rx="3" fill="#7a3c0c"/>
+      <text x="997.5" y="1852.3" class="mono" font-size="15.5" font-weight="750" fill="#f0cf9e">n3</text>
+      <text x="1049.5" y="1852.3" font-size="15" font-weight="800" fill="#b4540a">사규 · 「위임전결규정(샘플)」 별표 제1호</text>
+      <rect x="1276.5" y="1839.3" width="68" height="31" rx="5" fill="#ffffff" opacity="0.18"/>
+      <text x="1310.5" y="1861.3" text-anchor="middle" font-size="15.5" font-weight="800" fill="#ffe9c9">핵심</text>
+      <text x="997.5" y="1904.3" font-size="23" font-weight="800" fill="#ffe9c9"><tspan x="997.5" dy="0">계약 체결 결재</tspan></text>
+      <text x="997.5" y="1945.3" font-size="16.5" font-weight="650" fill="#f0cf9e">500만원 이하 팀장 전결</text>
+    </g>
+  
+
+    <text x="38" y="2245" font-size="16" font-weight="800" fill="#18251e">읽는 법</text>
+    <rect x="118" y="2219" width="17" height="17" rx="4" fill="#c98a3a"/><text x="144" y="2233" font-size="14.5" fill="#526159">선행</text>
+<rect x="216" y="2219" width="17" height="17" rx="4" fill="#7a3c0c"/><text x="242" y="2233" font-size="14.5" fill="#526159">핵심</text>
+<rect x="314" y="2219" width="17" height="17" rx="4" fill="#d9711a"/><text x="340" y="2233" font-size="14.5" fill="#526159">병목</text>
+<rect x="412" y="2219" width="17" height="17" rx="4" fill="#2e8f76"/><text x="438" y="2233" font-size="14.5" fill="#526159">회귀</text>
+    <rect x="500" y="2219" width="17" height="17" rx="4" fill="none" stroke="#b4540a" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="526" y="2233" font-size="14.5" fill="#526159">사규</text>
+    <line x1="648" y1="2237" x2="700" y2="2237" stroke="#53675d" stroke-width="4" marker-end="url(#arrow-sequence)"/>
+    <text x="720" y="2243" font-size="15" fill="#526159">절차 순서</text>
+    <line x1="860" y1="2237" x2="912" y2="2237" stroke="#0f8a65" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arrow-message)"/>
+    <text x="932" y="2243" font-size="15" fill="#526159">정보 전달</text>
+    <line x1="1072" y1="2237" x2="1124" y2="2237" stroke="#3478db" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arrow-loop)"/>
+    <text x="1144" y="2243" font-size="15" fill="#526159">보완 회귀</text>
+    <text x="38" y="2291" font-size="15.5" font-weight="650" fill="#56655d">단계는 위→아래, 담당은 좌→우로 읽습니다.</text>
+    <text x="38" y="2321" font-size="14.5" fill="#68776f">원래 2개 담당 레인을 2개 묶음으로 배치했으며, 3개 업무와 2개 연결 관계는 유지했습니다.</text>
+    <text x="38" y="2361" font-size="13.5" fill="#7b8881">출처: 샘플 사규 기반 자동 생성 모델 — 실기관 데이터 아님 · 실제 결재·업무 지시가 아닙니다.</text>
+    
+  
+</svg>

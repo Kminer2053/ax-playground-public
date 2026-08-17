@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AX Playground — 내부망 시스템 · 가드레일 통합 구조도</title>
+<style>
+  :root{
+    --gray-bg:#F1EFE8; --gray-bd:#888780; --gray-tx:#444441;
+    --teal-bg:#E1F5EE; --teal-bd:#0F6E56; --teal-tx:#085041;
+    --blue-bg:#E6F1FB; --blue-bd:#185FA5; --blue-tx:#0C447C;
+    --purple-bg:#EEEDFE; --purple-bd:#534AB7; --purple-tx:#3C3489;
+    --green-bg:#EAF3DE; --green-bd:#3B6D11; --green-tx:#27500A;
+    --amber-bg:#FAEEDA; --amber-bd:#854F0B; --amber-tx:#633806;
+    --coral-bg:#FAECE7; --coral-bd:#993C1D; --coral-tx:#712B13;
+    --red-bg:#FCEBEB;  --red-bd:#A32D2D;  --red-tx:#791F1F;
+    --muted:#888;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:32px 16px 64px;
+    background:#F8F8F7; color:#1a1a18;
+    font-family:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1080px; margin:0 auto;}
+  header.title{text-align:center; margin-bottom:8px;}
+  header.title h1{font-size:24px; margin:0 0 6px; font-weight:700;}
+  header.title p{font-size:13px; color:#555; margin:2px 0;}
+  .badge{display:inline-block; font-size:11px; padding:1px 7px; border-radius:10px; font-weight:600; vertical-align:middle;}
+  .badge-tobe{background:#FFF3D6; color:#8a5b00; border:1px solid #d9a300;}
+  .badge-ctrl{background:#eee; color:#555; border:1px solid #bbb; font-weight:500; font-size:10px;}
+  .flow{display:flex; flex-direction:column; align-items:center; gap:0;}
+  .arrow{width:2px; background:#bbb; height:26px; position:relative;}
+  .arrow::after{content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid #bbb;}
+  .arrow .lbl{position:absolute; left:10px; top:4px; font-size:11px; color:var(--muted); white-space:nowrap;}
+  .row{display:flex; gap:12px; justify-content:center; width:100%; flex-wrap:wrap;}
+  .card{border-radius:10px; border:1px solid; padding:12px 14px; flex:1; min-width:150px;}
+  .card h3{margin:0 0 4px; font-size:14px; font-weight:700;}
+  .card .sub{font-size:11.5px; line-height:1.45;}
+  .card .port{font-size:11px; color:var(--muted); font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .gray{background:var(--gray-bg); border-color:var(--gray-bd);} .gray h3{color:var(--gray-tx);} .gray .sub{color:var(--gray-tx);}
+  .teal{background:var(--teal-bg); border-color:var(--teal-bd);} .teal h3{color:var(--teal-tx);} .teal .sub{color:var(--teal-tx);}
+  .blue{background:var(--blue-bg); border-color:var(--blue-bd);} .blue h3{color:var(--blue-tx);} .blue .sub{color:var(--blue-tx);}
+  .purple{background:var(--purple-bg); border-color:var(--purple-bd);} .purple h3{color:var(--purple-tx);} .purple .sub{color:var(--purple-tx);}
+  .green{background:var(--green-bg); border-color:var(--green-bd);} .green h3{color:var(--green-tx);} .green .sub{color:var(--green-tx);}
+  .amber{background:var(--amber-bg); border-color:var(--amber-bd);} .amber h3{color:var(--amber-tx);} .amber .sub{color:var(--amber-tx);}
+  .coral{background:var(--coral-bg); border-color:var(--coral-bd);} .coral h3{color:var(--coral-tx);} .coral .sub{color:var(--coral-tx);}
+  .red{background:var(--red-bg); border-color:var(--red-bd);} .red h3{color:var(--red-tx);} .red .sub{color:var(--red-tx);}
+  .server{border:1.5px dashed #aaa; border-radius:14px; padding:18px 16px 20px; margin-top:0; width:100%; background:rgba(255,255,255,0.4);}
+  .server > .label{font-size:12px; color:#666; font-weight:600; margin-bottom:12px;}
+  .panel-box{border:1.5px dashed #bbb; border-radius:12px; padding:14px; width:100%; background:rgba(255,255,255,0.55);}
+  .panel-box > .label{font-size:12px; color:#555; font-weight:600; margin-bottom:10px;}
+  .gr{border-radius:12px; border:1.5px solid; padding:14px 16px; width:100%;}
+  .gr > .gr-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; flex-wrap:wrap; gap:4px;}
+  .gr > .gr-head .h{font-size:14px; font-weight:700;}
+  .gr > .gr-head .d{font-size:11.5px;}
+  .gr-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+  .gr-grid.three{grid-template-columns:repeat(3,1fr);}
+  .gitem{background:#fff; border:1px solid; border-radius:8px; padding:9px 10px;}
+  .gitem .t{font-size:12.5px; font-weight:700; margin-bottom:3px;}
+  .gitem .x{font-size:11px; line-height:1.4; color:#555;}
+  .gitem .file{font-size:10.5px; font-family:ui-monospace,Menlo,Consolas,monospace; color:#777; margin-top:4px; word-break:break-all;}
+  .gitem .mid{font-size:10px; color:#999; font-weight:600; margin-top:2px;}
+  .gr-red{border-color:var(--red-bd); background:var(--red-bg);} .gr-red .gr-head .h{color:var(--red-tx);} .gr-red .gr-head .d{color:var(--red-bd);} .gr-red .gitem{border-color:#e3b9b9;} .gr-red .gitem .t{color:var(--red-tx);}
+  .gr-purple{border-color:var(--purple-bd); background:var(--purple-bg);} .gr-purple .gr-head .h{color:var(--purple-tx);} .gr-purple .gr-head .d{color:var(--purple-bd);} .gr-purple .gitem{border-color:#cfc9f0;} .gr-purple .gitem .t{color:var(--purple-tx);}
+  .gr-amber{border-color:var(--amber-bd); background:var(--amber-bg);} .gr-amber .gr-head .h{color:var(--amber-tx);} .gr-amber .gr-head .d{color:var(--amber-bd);} .gr-amber .gitem{border-color:#e8d3a8;} .gr-amber .gitem .t{color:var(--amber-tx);}
+  .gw-wrap{border:2px solid #534AB7; border-radius:12px; padding:12px; background:#faf9ff; width:100%;}
+  .gw-title{font-size:13px; font-weight:700; color:#3C3489; margin-bottom:4px;}
+  .gw-title code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; background:#ece9ff; padding:1px 6px; border-radius:4px;}
+  .gw-sub{font-size:11.5px; color:#555; margin-bottom:12px;}
+  .vsep{height:14px; width:2px; background:#c9c2ec; margin:8px auto; position:relative;}
+  .vsep::after{content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%); border-left:4px solid transparent; border-right:4px solid transparent; border-top:6px solid #c9c2ec;}
+  .legend{margin-top:28px; border-top:1px solid #ddd; padding-top:16px;}
+  .legend h2{font-size:14px; margin:0 0 10px;}
+  table{border-collapse:collapse; width:100%; font-size:12px;}
+  th,td{border:1px solid #ddd; padding:6px 9px; text-align:left; vertical-align:top;}
+  th{background:#f0efe9; font-weight:600;}
+  td code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px;}
+  .note{font-size:11.5px; color:#666; margin-top:8px;}
+  .foot{text-align:center; font-size:11px; color:var(--muted); margin-top:24px;}
+  .chip{display:inline-block; font-size:10px; padding:1px 6px; border-radius:4px; background:#eee; color:#555; margin-right:4px;}
+  @media (max-width:720px){ .gr-grid,.gr-grid.three{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title">
+    <h1>AX Playground — 내부망 시스템 · 가드레일 통합 구조도</h1>
+    <p>단일 서버 · 내부망 전용(외부 인터넷 차단) · 로컬 LLM(OpenAI 호환) 기반</p>
+    <p>국가·공공기관 AI보안 가이드북 v2.0 · M09·M13·M14·M15·M16·M27 적용 &nbsp;|&nbsp; 2026.06</p>
+  </header>
+
+  <div class="flow">
+
+    <!-- 사용자 단말 -->
+    <div class="row">
+      <div class="card gray"><h3>직원 PC</h3><div class="sub">브라우저 (Chrome/Edge)</div><div class="port">→ :443 HTTPS</div></div>
+      <div class="card gray"><h3>개발자 PC</h3><div class="sub">VS Code + Continue</div><div class="port">→ :3001 Gitea</div></div>
+      <div class="card gray"><h3>IT 관리자 PC</h3><div class="sub">SSH · Gitea 관리</div><div class="port">→ :22 SSH</div></div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 방화벽 -->
+    <div class="row">
+      <div class="card red" style="text-align:center;">
+        <h3>내부망 방화벽</h3>
+        <div class="sub">허용 인바운드 :443(직원) · :3001(개발자) · :22(관리자) &nbsp;|&nbsp; 외부 인터넷 차단</div>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 단일 서버 -->
+    <div class="server">
+      <div class="label">단일 서버 — Ubuntu 24.04 LTS / 203.0.113.7 &nbsp;·&nbsp; 모든 서비스 루프백(127.0.0.1) 전용</div>
+
+      <!-- Nginx -->
+      <div class="row">
+        <div class="card teal" style="text-align:center;">
+          <h3>Nginx 리버스 프록시 &nbsp;<span class="badge badge-ctrl">GR2-3 · M16</span></h3>
+          <div class="sub">:80 → HTTPS 리다이렉트 · :443 TLS 종단 · proxy_pass 127.0.0.1:3000 / :3001<br>
+          <b>모델 정보 유출 방지</b> — server_tokens off · proxy_hide_header (X-Powered-By 등) · 내부 LLM 엔드포인트 외부 차단</div>
+          <div class="port" style="margin-top:4px;">infra/nginx/security.conf</div>
+        </div>
+      </div>
+
+      <div class="vsep" style="background:#bbb;"></div>
+
+      <div class="row" style="align-items:stretch;">
+        <!-- AX Portal (Next.js) -->
+        <div class="panel-box" style="flex:3; min-width:320px;">
+          <div class="label">AX Portal — Next.js 16 / React 19 / TypeScript &nbsp;·&nbsp; 127.0.0.1:3000</div>
+
+          <div class="row">
+            <div class="card blue"><h3>인증 · 세션</h3><div class="sub">iron-session · role 기반 접근</div></div>
+            <div class="card blue"><h3>미들웨어</h3><div class="sub">세션 검증 · CORS · 라우팅</div></div>
+          </div>
+
+          <div class="vsep"></div>
+
+          <!-- 업무 패널 -->
+          <div class="row">
+            <div class="card amber" style="flex:1;"><h3 style="font-size:13px;">업무 패널</h3>
+              <div class="sub">법무 <code>/api/law</code> · 홍보 <code>/api/pr</code> · 매장·마케팅 <code>/api/sales</code> · 안전 <code>/api/safety</code> · VOC <code>/api/voc</code> · AI챗 <code>/api/ai</code></div>
+            </div>
+          </div>
+
+          <div class="vsep"></div>
+          <div style="text-align:center; font-size:11px; color:#666; margin-bottom:8px;">모든 LLM 호출은 ↓ 단일 게이트웨이를 경유</div>
+
+          <!-- 가드레일 게이트웨이 -->
+          <div class="gw-wrap">
+            <div class="gw-title">🛡 LLM 가드레일 게이트웨이 — <code>guardedChat() / guardedStreamChat()</code></div>
+            <div class="gw-sub">src/lib/guardrails/index.ts &nbsp;·&nbsp; 입력검사 → 모델제어 → 출력검사 → 감사로그를 단일 경로로 강제</div>
+
+            <!-- GR1 -->
+            <div class="gr gr-red">
+              <div class="gr-head"><span class="h">GR1 · 입력 검사</span><span class="d">사용자 입력이 LLM에 도달하기 전 차단 (M14·M13·M27)</span></div>
+              <div class="gr-grid">
+                <div class="gitem"><div class="t">입력 길이 제한</div><div class="x">최대 8,000자 · 토큰 상한</div><div class="mid">M14</div><div class="file">input/length.ts</div></div>
+                <div class="gitem"><div class="t">인젝션·탈옥 탐지</div><div class="x">점수제 룰셋 · 한/영</div><div class="mid">M14 · llm-guard 대응</div><div class="file">input/injection.ts</div></div>
+                <div class="gitem"><div class="t">PII 입력 차단</div><div class="x">주민·계좌·카드 차단</div><div class="mid">M13 · presidio 대응</div><div class="file">input/pii.ts</div></div>
+                <div class="gitem"><div class="t">요청 속도 제한</div><div class="x">분당 30회 · IP/User</div><div class="mid">M14·M27 · slowapi 대응</div><div class="file">input/ratelimit.ts</div></div>
+              </div>
+            </div>
+
+            <div class="vsep" style="background:#c9c2ec;"></div>
+
+            <!-- GR2 -->
+            <div class="gr gr-purple">
+              <div class="gr-head"><span class="h">GR2 · 모델 제어</span><span class="d">시스템 프롬프트 + 파라미터 (앱·모델 이중 방어) (M15·M14)</span></div>
+              <div class="gr-grid three">
+                <div class="gitem"><div class="t">시스템 프롬프트</div><div class="x">금지행위·역할·탈옥거부</div><div class="mid">M15 (앱 레이어)</div><div class="file">model/system-prompt.ts</div></div>
+                <div class="gitem"><div class="t">Modelfile SYSTEM</div><div class="x">동일 보안규칙 (모델 레이어)</div><div class="mid">M15 (모델 레이어)</div><div class="file">infra/ollama/Modelfile.ax</div></div>
+                <div class="gitem"><div class="t">파라미터 제한</div><div class="x">num_predict 2048 · num_ctx 8192</div><div class="mid">M14</div><div class="file">infra/ollama/Modelfile.ax</div></div>
+              </div>
+            </div>
+
+            <div class="vsep" style="background:#e0c98a;"></div>
+
+            <!-- GR3 -->
+            <div class="gr gr-amber">
+              <div class="gr-head"><span class="h">GR3 · 출력 검사</span><span class="d">사용자에게 전달되기 전 최종 정제·차단 (M13·M09)</span></div>
+              <div class="gr-grid three">
+                <div class="gitem"><div class="t">PII 출력 마스킹</div><div class="x">[RRN]·[PHONE]·[EMAIL] 치환</div><div class="mid">M13 · presidio 대응</div><div class="file">output/pii-mask.ts</div></div>
+                <div class="gitem"><div class="t">민감정보 필터</div><div class="x">자격증명·내부IP 마스킹 · 악성코드 차단</div><div class="mid">M13 · llm-guard 대응</div><div class="file">output/secrets.ts</div></div>
+                <div class="gitem"><div class="t">감사 로그 기록</div><div class="x">입·출력 전문 (파일+DB 이중)</div><div class="mid">M09</div><div class="file">output/audit.ts</div></div>
+              </div>
+            </div>
+          </div><!-- /gw -->
+        </div>
+
+        <!-- Gitea -->
+        <div class="card gray" style="flex:1; min-width:150px;">
+          <h3>Gitea</h3>
+          <div class="sub">내부 Git 서버 :3001<br>/opt/gitea · ax-portal.git<br>PM2 배포 트리거</div>
+        </div>
+      </div>
+
+      <div class="arrow"><span class="lbl">127.0.0.1 루프백 전용</span></div>
+
+      <!-- 서비스 레이어 -->
+      <div class="row">
+        <div class="card purple"><h3>Ollama LLM</h3><div class="sub">OpenAI 호환 API · 임베딩<br>gemma·qwen 등 로컬 모델</div><div class="port">127.0.0.1:11434</div></div>
+        <div class="card purple" style="opacity:0.82;">
+          <h3>Qdrant 벡터DB &nbsp;<span class="badge badge-tobe">to-be 예정</span></h3>
+          <div class="sub">RAG 강화용 향후 도입<br>현재 임베딩은 MongoDB 저장</div><div class="port">127.0.0.1:6333</div></div>
+        <div class="card green"><h3>MongoDB</h3><div class="sub">LawConsult·PressRelease·VocItem·SalesOrder·RagRegulation·User<br><b>+ AuditLog · GuardRateLimit</b></div><div class="port">127.0.0.1:27017 루프백</div></div>
+      </div>
+
+      <div class="arrow"></div>
+
+      <!-- 스토리지 -->
+      <div class="row">
+        <div class="card gray"><h3>모델 스토리지</h3><div class="sub">/root/.ollama/models · GGUF Q4_K_M</div></div>
+        <div class="card gray" style="opacity:0.82;"><h3>벡터 스토리지 <span class="badge badge-tobe">to-be</span></h3><div class="sub">/opt/qdrant-data</div></div>
+        <div class="card gray"><h3>DB·로그 스토리지</h3><div class="sub">/var/lib/mongodb · <b>/var/log/axp-audit.log</b></div></div>
+      </div>
+
+      <div class="arrow"></div>
+
+      <!-- 모니터링 -->
+      <div class="row">
+        <div class="card green" style="text-align:center;">
+          <h3>상시 모니터링 &nbsp;<span class="badge badge-ctrl">M09</span></h3>
+          <div class="sub">log-analyzer · 일일 리포트 · 차단/마스킹 집계 · 이상행위 경보 · cron 매일 09:00 → /data/reports/</div>
+          <div class="port" style="margin-top:4px;">src/scripts/log-analyzer.ts · npm run report:audit</div>
+        </div>
+      </div>
+
+    </div><!-- /server -->
+  </div><!-- /flow -->
+
+  <!-- 통제 매핑 -->
+  <div class="legend">
+    <h2>통제 매핑 (가이드북 ID ↔ 구현)</h2>
+    <table>
+      <tr><th style="width:14%;">단계</th><th style="width:24%;">통제</th><th style="width:14%;">ID</th><th style="width:22%;">가이드북 예시 도구</th><th>실제 구현 (TypeScript 내재화)</th></tr>
+      <tr><td rowspan="4">GR1 입력</td><td>입력 길이 제한</td><td>M14</td><td>FastAPI limit</td><td><code>input/length.ts</code></td></tr>
+      <tr><td>인젝션·탈옥 탐지</td><td>M14</td><td>llm-guard Scanner</td><td><code>input/injection.ts</code></td></tr>
+      <tr><td>PII 입력 차단</td><td>M13</td><td>presidio Analyzer</td><td><code>input/pii.ts</code> · <code>pii-patterns.ts</code></td></tr>
+      <tr><td>요청 속도 제한</td><td>M14·M27</td><td>slowapi</td><td><code>input/ratelimit.ts</code> · <code>GuardRateLimit</code>(TTL)</td></tr>
+      <tr><td rowspan="3">GR2 모델</td><td>시스템 프롬프트</td><td>M15</td><td>Ollama Modelfile SYSTEM</td><td><code>model/system-prompt.ts</code> + Modelfile</td></tr>
+      <tr><td>파라미터 제한</td><td>M14</td><td>Ollama Modelfile PARAMETER</td><td><code>infra/ollama/Modelfile.ax</code></td></tr>
+      <tr><td>모델 정보 유출 방지</td><td>M16</td><td>Nginx 헤더 제거</td><td><code>infra/nginx/security.conf</code></td></tr>
+      <tr><td rowspan="3">GR3 출력</td><td>PII 마스킹</td><td>M13</td><td>presidio Anonymizer</td><td><code>output/pii-mask.ts</code></td></tr>
+      <tr><td>민감정보 필터</td><td>M13</td><td>llm-guard Output</td><td><code>output/secrets.ts</code></td></tr>
+      <tr><td>감사 로그</td><td>M09</td><td>/var/log 파일</td><td><code>output/audit.ts</code> · <code>AuditLog</code>(파일+DB)</td></tr>
+      <tr><td>모니터링</td><td>일일 리포트</td><td>M09</td><td>log_analyzer.py</td><td><code>scripts/log-analyzer.ts</code></td></tr>
+    </table>
+    <p class="note">
+      <span class="chip">내재화</span> 가이드북은 Python 오픈소스(llm-guard·presidio·slowapi)를 pip 설치하는 사이드카 방식을 예시하나, 본 시스템은 동등 기능을 TypeScript로 직접 구현하여 Next.js 단일 코드베이스에 통합했다(오프라인 내부망 운영 부담 최소화).
+      <br><span class="chip badge-tobe" style="border-radius:4px;">to-be</span> Qdrant 벡터DB는 향후 RAG 강화를 위한 도입 예정 항목이며, 현재 임베딩은 MongoDB에 저장된다.
+    </p>
+  </div>
+
+  <div class="foot">AX Playground · 내부망 전용 · 가드레일 통제 매핑 상세: docs/guardrail-mapping.md</div>
+
+</div>
+</body>
+</html>

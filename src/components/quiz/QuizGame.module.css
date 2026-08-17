@@ -1,0 +1,122 @@
+/* 퀴즈 전용 애니메이션 — 공유 globals.css를 건드리지 않도록 CSS 모듈로 격리. */
+
+.flame {
+  display: inline-block;
+  animation: flick 0.7s ease-in-out infinite;
+}
+@keyframes flick {
+  0%, 100% { transform: scale(1) rotate(-5deg); }
+  50% { transform: scale(1.2) rotate(5deg); }
+}
+
+.bob {
+  display: inline-block;
+  animation: bob 1s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* 정답 점수 팝(+260이 위로 튀어오름) */
+.pop {
+  animation: pop 0.85s ease-out forwards;
+}
+@keyframes pop {
+  0% { transform: translateY(8px) scale(0.8); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-18px) scale(1.1); opacity: 0; }
+}
+
+/* 오답 흔들림 */
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* 리액션 칸 등장(정답/오답 순간 살짝 부풀며 등장) */
+.reactionIn {
+  animation: reactionIn 0.3s ease-out;
+}
+@keyframes reactionIn {
+  from { transform: scale(0.94); opacity: 0.4; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* 속보 티커 마키 */
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 22s linear infinite;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* 리더보드 순위 상승 행 플래시 */
+.flash {
+  animation: flash 1.2s ease-out;
+}
+@keyframes flash {
+  0% { background-color: var(--ax-success-bg); }
+  100% { background-color: transparent; }
+}
+
+/* 행/항목 진입 */
+.rise {
+  animation: rise 0.35s ease-out;
+}
+@keyframes rise {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* 실시간 점(깜빡임) */
+.live {
+  animation: live 1.4s ease-in-out infinite;
+}
+@keyframes live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* 7+ 콤보 글로우 펄스 */
+.glow {
+  animation: glow 1s ease-in-out infinite;
+}
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.0); }
+  50% { box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.18); }
+}
+
+/* 콤보 밀스톤(5·10·…) — 화면 전체 플래시 + 컨페티 + 배너 */
+.mFlash { animation: mflash 1.25s ease-out forwards; }
+@keyframes mflash {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.mText { animation: mtext 1.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+@keyframes mtext {
+  0% { transform: scale(0.4); opacity: 0; }
+  22% { transform: scale(1.18); opacity: 1; }
+  68% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.02); opacity: 0; }
+}
+.confetti {
+  position: absolute;
+  top: -16px;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0); opacity: 1; }
+  100% { transform: translateY(102vh) rotate(680deg); opacity: 0.85; }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "korea100studio",
+  "version": "0.1.2",
+  "description": "Turn any process into a vertical swimlane board (SVG/PNG), audit its composition, and animate it. Agent Skill for Claude Code and Codex.",
+  "type": "module",
+  "bin": {
+    "korea100studio": "scripts/board.mjs"
+  },
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "README.ko.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "agents/",
+    "schemas/",
+    "scripts/",
+    "references/",
+    "templates/",
+    "fixtures/"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "render": "node scripts/board.mjs render",
+    "audit": "node scripts/board.mjs audit",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "swimlane",
+    "process",
+    "workflow",
+    "diagram",
+    "svg",
+    "flowchart",
+    "agent-skill",
+    "claude-code",
+    "codex",
+    "visualization"
+  ],
+  "author": "Hosung Seo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hosungseo/korea100studio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hosungseo/korea100studio/issues"
+  },
+  "homepage": "https://github.com/hosungseo/korea100studio#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  },
+  "license": "MIT"
+}

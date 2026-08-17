@@ -1,0 +1,350 @@
+{
+ "_comment": "업무100 온톨로지 매니페스트 v0 — 공간·노드타입·공간쌍별 허용관계의 단일 기준. 적재/검증 코드는 이 파일을 읽어 쓰기 시점에 강제한다(화이트리스트 밖 조합은 저장 거부). 개념 설명·불변식·매핑은 docs/ONTOLOGY.md. 버전 규칙: 파일명 v0=세대(호환 깨질 때만 증가), manifest_version=semver(같은 세대 내 수정).",
+ "manifest_version": "0.4.0",
+ "updated": "2026-07-21",
+ "spaces": {
+  "org": {
+   "label": "조직",
+   "node_types": {
+    "Dept": {
+     "label": "부서",
+     "props": {
+      "deptPath": "최상위/…/해당 조직, 가변 깊이 슬래시 표기(예: 경영지원본부/총무처, 제1지역본부/○○지점). 본부명은 「별표 제1호 (기구표)」에서 도출(별표 제6호 fullText의 세로쓰기 본부명은 신뢰 불가)",
+      "kind": "본사|지역본부|현업",
+      "order": "표시 순서"
+     }
+    },
+    "Position": {
+     "label": "직위(전결권자)",
+     "props": {},
+     "closed_instances": [
+      "대표이사",
+      "본부장",
+      "실장",
+      "센터장",
+      "처장",
+      "단장",
+      "팀장",
+      "지점장"
+     ],
+     "_comment": "근거 = 위임전결규정 제3조 열거(본부장·실장·센터장·처장·팀장·지점장) + 별표 제1호 전결권자 열(단장 — 사업 부문 구획, 대표이사 — 비위임 결재권자). '사장'은 코퍼스에 0회 출현하여 제외. 별표 단서의 재위임 직위(파트장 등)는 v0 미수용 — condition 문자열에만 격납."
+    }
+   }
+  },
+  "work": {
+   "label": "업무 개념",
+   "_comment": "SKOS식 개념 노드 — label=prefLabel, alt[]=altLabel(별칭 마이닝 수용처). TaskGroup(업무군)·상위분류는 시드 소스·소비처·수락질의가 없어 v1 예약으로 강등(reserved 참조).",
+   "node_types": {
+    "Task": {
+     "label": "업무",
+     "props": {
+      "desc": "한 줄 설명",
+      "boardId": "korea100studio board-v1 문서 참조(work100_boards._id, 있으면). 보드 내부(stages·nodes·edges)는 보드 저작물이 원장 — 온톨로지에 저장하지 않는다",
+      "org": "본사|현업(집행 계층)",
+      "steps": "프로세스 3~5단계(재커레이션 산출)"
+     }
+    }
+   }
+  },
+  "corpus": {
+   "label": "규정 실체",
+   "reference_only": true,
+   "_comment": "reference_only — ontology_nodes에 이 공간의 노드 생성 금지(로더가 이 필드로 거부). 실체 원장은 rag_regulation이며 엣지의 anchor 객체로만 참조한다. 문서 위계·조문 간 관계는 기존 rag_graph_edges(kind:ref·hier·law + 보조 메타 arthash)가 소유하고 온톨로지는 신규 쓰기 금지. 관계유형 참고: GRAPH_SCHEMA.md §2·§3의 13유형 + DB 폴백·보류 마커(기타·미상·보류) = distinct 16(2026-07-21 실측).",
+   "node_types": {
+    "RegDoc": {
+     "label": "규정 문서",
+     "anchor": {
+      "doc": "rag_regulation.title 원문 그대로(필수)"
+     }
+    },
+    "Article": {
+     "label": "조문·별표 청크",
+     "anchor": {
+      "doc": "rag_regulation.title(필수)",
+      "name": "articles[].name 원문 그대로(필수, 예: '제8조(이행담보금 및 환전자금)', '별표 제1호 (전결사항)')",
+      "srcHash": "sha1(name + '\\n' + fullText.replace(/\\s+/g,' ').trim()).hex 앞 24자 — regulations-graph-build.ts hashOf와 동일 산식. 판 드리프트 감지용(권장)"
+     },
+     "_comment": "ci/sci(배열 인덱스)는 재적재마다 재색인되므로 앵커 금지. 별표 내부 행 단위 앵커(Provision)는 v1 예약 — 완충으로 evidence.rowHash 사용."
+    },
+    "ExtLaw": {
+     "label": "외부법령·행정규칙(원문 미수록)",
+     "anchor": {
+      "law": "정규화 법령·행정규칙명(필수 — 기존 kind:law의 lawName 관례, 예: '기타공공기관 계약사무 운영규정', '국가계약법 시행령')",
+      "article": "조 표기(선택, 예: '제7조')"
+     },
+     "_comment": "코퍼스 밖 외부 근거의 식별된 인용 — promoted 허용. UI·보드 표기는 반드시 '외부법령/행정규칙 — 원문 미수록' 배지 동반(조문 직행 불가를 정직하게). 명칭 미식별 인용은 ExtLaw가 아니라 evidence.external:true(promoted 금지)로."
+    }
+   }
+  },
+  "concept": {
+   "label": "개념(기능분류)",
+   "node_types": {
+    "Function": {
+     "label": "기능",
+     "props": {
+      "domain": "대분류(6: 경영지원·재무계약·영업상품·광고홍보·안전시설·감사정보)",
+      "level": "domain|sub"
+     },
+     "_comment": "업무 기능 분류 — 부서 무관 일의 성격. 재커레이션 확정 분류(2026-07-24, 사용자 승인)가 시드. 부서·현업을 가로지르는 기능 교차가 1급 구조."
+    }
+   }
+  }
+ },
+ "meta_edges": [
+  {
+   "rel": "부서상하",
+   "from": [
+    "org",
+    [
+     "Dept"
+    ]
+   ],
+   "to": [
+    "org",
+    [
+     "Dept"
+    ]
+   ],
+   "direction": "하위 → 직상위 (kind:hier와 동일 규약)",
+   "props": {},
+   "evidence": "optional"
+  },
+  {
+   "rel": "선행",
+   "from": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "to": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "direction": "선행 업무 → 후행 업무",
+   "props": {
+    "note": "선후 조건(예: 사전 심의 완료 후)"
+   },
+   "evidence": "optional"
+  },
+  {
+   "rel": "협업",
+   "from": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "to": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "direction": "무방향 — 저장은 from.id < to.id 사전순 정규화만 허용(역순은 게이트 거부), 소비는 양방향",
+   "props": {
+    "note": "협업 성격"
+   },
+   "evidence": "optional"
+  },
+  {
+   "rel": "소관",
+   "from": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "to": [
+    "org",
+    [
+     "Dept"
+    ]
+   ],
+   "direction": "업무 → 소관 부서(주관 의미 단일 — '협조' 구분은 근거 소스 확보 후 v1)",
+   "props": {},
+   "evidence": "required",
+   "_comment": "1차 근거: 직제규정 시행세칙 「별표 제6호 (본사 부서별 분장업무)」·「별표 제7호 (지역본부 부서별 분장업무)」"
+  },
+  {
+   "rel": "전결",
+   "from": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "to": [
+    "org",
+    [
+     "Position"
+    ]
+   ],
+   "direction": "업무 → 전결 직위",
+   "props": {
+    "limit": "{ min: 원단위 정수|null, max: 원단위 정수|null, text: 원문 표기 } — 상한형은 max만, 구간형(예: 이천만원 초과 오천만원 이하)은 min·max, 하한형(예: 100만원 이상)은 min만. min·max는 원문의 초과/이상/이하/미만 패턴에서 도출하며 tableGloss의 '(금액: …)' 부기는 사용 금지(오염 실증됨). 용역종별 차등 한도 등 복합 단서는 condition 잔류",
+    "condition": "조건부 전결·재위임 단서 원문",
+    "positionRule": "복합 전결권자 열(예: '본부장/실장', '단장,처장')을 직위별 엣지로 분할할 때 택일 규칙 보존(예: '소속에 따라 택일(본부장/실장)'). 이 필드가 같은 엣지 쌍은 원천 1행으로 취급(개수 대사 시)"
+   },
+   "evidence": "required",
+   "_comment": "전결 엣지는 전결권자 '사실'의 유일 표현이다. 그 근거 조문은 항상 업무근거(basis:전결) 엣지로 쌍 생성한다. 별표 제1호와 개별 규정 본문의 전결 조항이 상충하면 자동 promoted 금지 → 재검토 큐. 1차 근거: 위임전결규정 「별표 제1호 (전결사항)」 tableGloss 약 285행(2026-07-21 실측) — 단 gloss는 후보 생성 전용, limit·quote는 fullText 원문에서 절취."
+  },
+  {
+   "rel": "업무근거",
+   "from": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "to": [
+    "corpus",
+    [
+     "RegDoc",
+     "Article",
+     "ExtLaw"
+    ]
+   ],
+   "direction": "업무 → 근거 규정/조문 (GROUNDED_IN)",
+   "props": {
+    "basis": "전결|절차|기준|서식",
+    "note": "근거 요지 한 줄"
+   },
+   "evidence": "required",
+   "_comment": "온톨로지의 주 산출물. board-v1 nodes[].refs와 지식검색 조문 직행의 원천."
+  },
+  {
+   "rel": "기능분류",
+   "from": [
+    "work",
+    [
+     "Task"
+    ]
+   ],
+   "to": [
+    "concept",
+    [
+     "Function"
+    ]
+   ],
+   "direction": "업무 → 세부기능(정확히 1개)",
+   "props": {},
+   "evidence": "optional",
+   "_comment": "큐레이션 산출(원문 앵커 없음). Function.props.domain으로 대분류 도출."
+  },
+  {
+   "rel": "상위분류",
+   "from": [
+    "concept",
+    [
+     "Function"
+    ]
+   ],
+   "to": [
+    "concept",
+    [
+     "Function"
+    ]
+   ],
+   "direction": "세부기능 → 대분류",
+   "props": {},
+   "evidence": "optional",
+   "_comment": "2단 위계 전용(sub→domain). 그 이상 깊이는 금지."
+  }
+ ],
+ "edge_common_fields": {
+  "status": {
+   "enum": [
+    "candidate",
+    "validated",
+    "promoted",
+    "rejected"
+   ],
+   "_comment": "candidate=규칙/LLM 도출 → validated=기계 게이트 통과 → promoted=관리자 승인 → rejected. 런타임 소비는 promoted만. 게이트 조건: ①매니페스트 정합 ②앵커 실존(+스텁 방지: 동일 별지·별표 번호 중복 시 최장 본문 우선, fullText 50자 미만 스텁 거부) ③evidence required 충족(quote·limit.text는 fullText 원문 실존 — 한글 금액↔숫자 정규화 대조 포함) ④양단 노드 status가 validated 이상. promote 조건: 양단 노드 promoted."
+  },
+  "rtConf": {
+   "enum": [
+    "상",
+    "중",
+    "하"
+   ],
+   "_comment": "판정 신뢰도. 필드명 근거: rag_graph_edges 실측 rtConf 2,622건·conf 0건(GRAPH_SCHEMA §1 구판 표기 conf는 정정 대상, 증분 빌더는 현재 미기록). candidate 생성 시 기록 권장 — 승격 판단은 status가 담당하므로 게이트 필수는 아님"
+  },
+  "evidence": {
+   "shape": {
+    "doc": "title(필수)",
+    "name": "조문명(권장)",
+    "srcHash": "24hex(권장)",
+    "rowHash": "sha1(정규화 행텍스트).hex 앞 12자(선택) — 별표류 대형 청크의 행 단위 완충: srcHash 불일치(stale) 시 rowHash 일치면 자동 재확인, 불일치만 재검토 큐",
+    "quote": "근거 발췌 1문장(선택) — 반드시 fullText에서 절취(tableGloss 절취 금지)",
+    "external": "true면 명칭 미식별 외부 참조 — validated까지만 가능, promoted 금지. 식별된 외부법령·행정규칙 인용은 external이 아니라 ExtLaw 앵커로(promoted 가능)"
+   },
+   "_comment": "evidence required 관계는 이 객체 없이 promoted 될 수 없다."
+  },
+  "stale": {
+   "shape": {
+    "since": "ISO 일시",
+    "reason": "srcHash_mismatch|doc_removed|article_removed"
+   },
+   "_comment": "앵커 소멸·개정 감지 시 자동 부여(status는 유지, 런타임 소비에서 제외). 문서 삭제 훅(removeGraphForDoc 계열)에서 evidence.doc 일치 엣지 일괄 stale. 해소는 재검토 큐에서 사람이"
+  },
+  "provenance": {
+   "shape": {
+    "method": "rule|llm|human",
+    "model": "모델ID(llm일 때)",
+    "at": "ISO 일시"
+   },
+   "_comment": "PROV 최소 차용 — 어떤 경로로 생겼는지. gemma 조용한 폴백 사고 재발 방지용 필수 필드"
+  }
+ },
+ "node_common_fields": {
+  "id": "불변 슬러그(예: dept:총무처, task:수의계약-체결). 생성 규칙(단일 구현 공유): NFKC 정규화 → 가운뎃점 3종(ㆍU+318D·․U+2024·‧U+2027)·슬래시·공백·쉼표를 '-'로 → 괄호와 그 내용 제거 → 한글·영숫자·하이픈만 허용 → 연속 하이픈 축약. 생성 후 개명 금지 — 이름 변경은 label/alt만",
+  "label": "표시명(prefLabel)",
+  "alt": "별칭 배열(altLabel) — regulation_aliases 마이닝 결과 수용",
+  "status": "candidate|validated|promoted|rejected (엣지와 동일 수명주기)",
+  "provenance": "엣지와 동일"
+ },
+ "storage": {
+  "collections": {
+   "nodes": "ontology_nodes",
+   "edges": "ontology_edges"
+  },
+  "unique_keys": {
+   "nodes": "(id)",
+   "edges": "(from, rel, to, evidence.doc, evidence.name, evidence.rowHash|'') — 별표 1행=엣지 1건 업서트 기준. 협업은 사전순 정규화로 (from,rel,to) 중복이 자동 차단됨"
+  },
+  "_comment": "기존 rag_graph_edges에 얹지 않는다(신규 컬렉션). 런타임 5개 소비 쿼리(expandViaGraph 정방향·역방향·hier 확장, graphCoherence, seedRelations)가 전부 kind 정확 필터(이 중 3개는 kind+tt)라 kind 격리로도 안전하지만, 수명주기·앵커 구조가 달라 컬렉션 분리가 명확."
+ },
+ "board_mapping": {
+  "refs_item": {
+   "label": "「doc」 name (표시용)",
+   "doc": "title",
+   "name": "조문명",
+   "srcHash": "24hex(선택)",
+   "extLaw": "true면 외부법령·행정규칙 — label 뒤 '(외부법령/행정규칙 — 원문 미수록)' 배지, 조문 직행 비활성"
+  },
+  "_comment": "board-v1 nodes[].refs 항목은 업무근거 evidence에서 기계 생성 — 표시 문자열 역파싱 금지. emphasis 매핑: 핵심=key · 병목=bottleneck · 회귀=loop · 주도=lead · 기본=normal (board-v1 enum 5값)."
+ },
+ "invariants": [
+  "매니페스트 밖 (space, node_type) 또는 (from, rel, to) 조합은 쓰기 거부",
+  "reference_only 공간(corpus)은 ontology_nodes 생성 거부 — 앵커 객체로만 참조",
+  "corpus 앵커에 ci/sci(배열 인덱스) 사용 금지 — (doc title, article name, srcHash)만",
+  "evidence required 관계는 evidence 없이 promoted 금지. evidence.external=true(명칭 미식별)는 promoted 금지 — 식별된 외부 인용은 ExtLaw 앵커(lawName 정규화 필수, '외부법령/행정규칙 — 원문 미수록' 표기 동반)로 promoted 가능",
+  "quote·limit.text는 fullText 원문 실존 검증 통과 필수 — tableGloss는 후보 생성 전용",
+  "런타임 소비는 status=promoted이고 stale이 아닌 것만",
+  "앵커 소멸(문서 삭제·조문명 소실) 시 자동 stale + 런타임 제외(status 유지)",
+  "노드 rejected 시 그 노드를 참조하는 엣지 전부 자동 rejected",
+  "rag_graph_edges의 kind:ref|hier|law(+보조 메타 arthash) 값·rt 라벨을 온톨로지가 새로 쓰거나 개명하지 않는다(기존 파이프라인 소유물)",
+  "노드 id 불변 — rag_regulation.title 개명 시 evidence.doc 일괄 치환 절차를 함께 수행",
+  "직접 관계만 저장 — 전이 위계는 질의 시 $graphLookup 계산, 저장 금지"
+ ],
+ "reserved_v1": {
+  "TaskGroup·상위분류": "(0.4.0에서 concept.Function·기능분류·상위분류로 승격됨)",
+  "RegVersion": "개정판 축(ELI Work/Expression 분리, year+srcHash 기반)",
+  "Provision": "별표 내부 행 단위 1급 앵커(현재는 evidence.rowHash 완충)",
+  "Step": "Task 내부 절차 단계 — 보드 저작물(work100_boards)이 원장인 동안 온톨로지 미저장",
+  "소관 role:협조": "협조·합의 문언의 명시 근거 확보 후"
+ }
+}

@@ -1,0 +1,848 @@
+{
+  "generatedAt": "2026-01-01",
+  "source": "예시 데이터(가상) — 실제 민원 통계가 아님",
+  "totals": {
+    "y2024": 240,
+    "y2025": 312,
+    "all": 552,
+    "yoyPct": 30.0
+  },
+  "byMonth": [
+    {
+      "month": 1,
+      "y2024": 18,
+      "y2025": 21
+    },
+    {
+      "month": 2,
+      "y2024": 16,
+      "y2025": 19
+    },
+    {
+      "month": 3,
+      "y2024": 19,
+      "y2025": 24
+    },
+    {
+      "month": 4,
+      "y2024": 21,
+      "y2025": 26
+    },
+    {
+      "month": 5,
+      "y2024": 22,
+      "y2025": 28
+    },
+    {
+      "month": 6,
+      "y2024": 20,
+      "y2025": 27
+    },
+    {
+      "month": 7,
+      "y2024": 24,
+      "y2025": 32
+    },
+    {
+      "month": 8,
+      "y2024": 23,
+      "y2025": 31
+    },
+    {
+      "month": 9,
+      "y2024": 20,
+      "y2025": 26
+    },
+    {
+      "month": 10,
+      "y2024": 19,
+      "y2025": 27
+    },
+    {
+      "month": 11,
+      "y2024": 18,
+      "y2025": 25
+    },
+    {
+      "month": 12,
+      "y2024": 20,
+      "y2025": 26
+    }
+  ],
+  "yoy": {
+    "byBonbu": [
+      {
+        "name": "본사",
+        "y2024": 96,
+        "y2025": 128,
+        "deltaPct": 33.3
+      },
+      {
+        "name": "제1지역본부",
+        "y2024": 62,
+        "y2025": 78,
+        "deltaPct": 25.8
+      },
+      {
+        "name": "제2지역본부",
+        "y2024": 48,
+        "y2025": 61,
+        "deltaPct": 27.1
+      },
+      {
+        "name": "제3지역본부",
+        "y2024": 34,
+        "y2025": 45,
+        "deltaPct": 32.4
+      }
+    ],
+    "byIssue": [
+      {
+        "name": "결제·환불 오류",
+        "y2024": 43,
+        "y2025": 61,
+        "deltaPct": 41.9
+      },
+      {
+        "name": "매장 이용 불편",
+        "y2024": 38,
+        "y2025": 47,
+        "deltaPct": 23.7
+      },
+      {
+        "name": "직원 응대 불만",
+        "y2024": 31,
+        "y2025": 39,
+        "deltaPct": 25.8
+      },
+      {
+        "name": "시설 고장·파손",
+        "y2024": 26,
+        "y2025": 33,
+        "deltaPct": 26.9
+      },
+      {
+        "name": "칭찬·감사",
+        "y2024": 24,
+        "y2025": 30,
+        "deltaPct": 25.0
+      },
+      {
+        "name": "안내 정보 부족",
+        "y2024": 21,
+        "y2025": 26,
+        "deltaPct": 23.8
+      },
+      {
+        "name": "청결 관리 미흡",
+        "y2024": 17,
+        "y2025": 21,
+        "deltaPct": 23.5
+      },
+      {
+        "name": "대기시간 지연",
+        "y2024": 13,
+        "y2025": 17,
+        "deltaPct": 30.8
+      }
+    ]
+  },
+  "years": {
+    "2025": {
+      "total": 312,
+      "byBonbu": [
+        {
+          "name": "본사",
+          "count": 128,
+          "pct": 41.0
+        },
+        {
+          "name": "제1지역본부",
+          "count": 78,
+          "pct": 25.0
+        },
+        {
+          "name": "제2지역본부",
+          "count": 61,
+          "pct": 19.6
+        },
+        {
+          "name": "제3지역본부",
+          "count": 45,
+          "pct": 14.4
+        }
+      ],
+      "byField": [
+        {
+          "name": "시설이용",
+          "count": 84,
+          "pct": 26.9,
+          "estimated": false
+        },
+        {
+          "name": "결제·요금",
+          "count": 76,
+          "pct": 24.4,
+          "estimated": false
+        },
+        {
+          "name": "직원응대",
+          "count": 52,
+          "pct": 16.7,
+          "estimated": false
+        },
+        {
+          "name": "안내·정보",
+          "count": 44,
+          "pct": 14.1,
+          "estimated": false
+        },
+        {
+          "name": "환경·청결",
+          "count": 33,
+          "pct": 10.6,
+          "estimated": false
+        },
+        {
+          "name": "기타",
+          "count": 23,
+          "pct": 7.4,
+          "estimated": false
+        }
+      ],
+      "byType1": [
+        {
+          "name": "문의",
+          "count": 142,
+          "pct": 45.5
+        },
+        {
+          "name": "불만",
+          "count": 82,
+          "pct": 26.3
+        },
+        {
+          "name": "건의",
+          "count": 42,
+          "pct": 13.5
+        },
+        {
+          "name": "칭찬",
+          "count": 32,
+          "pct": 10.3
+        },
+        {
+          "name": "신고",
+          "count": 9,
+          "pct": 2.9
+        },
+        {
+          "name": "기타",
+          "count": 5,
+          "pct": 1.6
+        }
+      ],
+      "byType2": [
+        {
+          "name": "결제오류",
+          "count": 38,
+          "pct": 12.2
+        },
+        {
+          "name": "매장이용불편",
+          "count": 31,
+          "pct": 9.9
+        },
+        {
+          "name": "환불지연",
+          "count": 27,
+          "pct": 8.7
+        },
+        {
+          "name": "응대불친절",
+          "count": 22,
+          "pct": 7.1
+        },
+        {
+          "name": "시설고장",
+          "count": 19,
+          "pct": 6.1
+        },
+        {
+          "name": "안내부족",
+          "count": 16,
+          "pct": 5.1
+        },
+        {
+          "name": "청결불량",
+          "count": 14,
+          "pct": 4.5
+        },
+        {
+          "name": "대기시간",
+          "count": 12,
+          "pct": 3.8
+        }
+      ],
+      "byCompletion": [
+        {
+          "name": "참고안내",
+          "count": 186,
+          "pct": 59.6
+        },
+        {
+          "name": "시정조치",
+          "count": 74,
+          "pct": 23.7
+        },
+        {
+          "name": "소관이관",
+          "count": 30,
+          "pct": 9.6
+        },
+        {
+          "name": "취하",
+          "count": 15,
+          "pct": 4.8
+        },
+        {
+          "name": "기타",
+          "count": 7,
+          "pct": 2.2
+        }
+      ],
+      "topStations": [
+        {
+          "name": "예시역 A",
+          "count": 31,
+          "pct": 9.9,
+          "verified": true,
+          "topField": "시설이용"
+        },
+        {
+          "name": "예시역 B",
+          "count": 26,
+          "pct": 8.3,
+          "verified": true,
+          "topField": "결제·요금"
+        },
+        {
+          "name": "예시역 C",
+          "count": 23,
+          "pct": 7.4,
+          "verified": true,
+          "topField": "직원응대"
+        },
+        {
+          "name": "예시역 D",
+          "count": 20,
+          "pct": 6.4,
+          "verified": true,
+          "topField": "안내·정보"
+        },
+        {
+          "name": "예시역 E",
+          "count": 18,
+          "pct": 5.8,
+          "verified": true,
+          "topField": "시설이용"
+        },
+        {
+          "name": "예시역 F",
+          "count": 16,
+          "pct": 5.1,
+          "verified": true,
+          "topField": "결제·요금"
+        },
+        {
+          "name": "예시역 G",
+          "count": 14,
+          "pct": 4.5,
+          "verified": true,
+          "topField": "직원응대"
+        },
+        {
+          "name": "예시역 H",
+          "count": 13,
+          "pct": 4.2,
+          "verified": true,
+          "topField": "안내·정보"
+        },
+        {
+          "name": "예시역 I",
+          "count": 11,
+          "pct": 3.5,
+          "verified": true,
+          "topField": "시설이용"
+        },
+        {
+          "name": "예시역 J",
+          "count": 10,
+          "pct": 3.2,
+          "verified": true,
+          "topField": "결제·요금"
+        },
+        {
+          "name": "예시역 K",
+          "count": 9,
+          "pct": 2.9,
+          "verified": true,
+          "topField": "직원응대"
+        },
+        {
+          "name": "예시역 L",
+          "count": 8,
+          "pct": 2.6,
+          "verified": true,
+          "topField": "안내·정보"
+        }
+      ],
+      "stationCoveragePct": 69.4,
+      "topBrands": [
+        {
+          "name": "예시매장 A",
+          "count": 58,
+          "pct": 18.6
+        },
+        {
+          "name": "예시매장 B",
+          "count": 49,
+          "pct": 15.7
+        },
+        {
+          "name": "예시매장 C",
+          "count": 40,
+          "pct": 12.8
+        },
+        {
+          "name": "예시매장 D",
+          "count": 32,
+          "pct": 10.3
+        },
+        {
+          "name": "예시매장 E",
+          "count": 25,
+          "pct": 8.0
+        },
+        {
+          "name": "예시매장 F",
+          "count": 18,
+          "pct": 5.8
+        }
+      ],
+      "repeatIssues": [
+        {
+          "name": "결제·환불 오류",
+          "count": 61,
+          "pct": 19.6
+        },
+        {
+          "name": "매장 이용 불편",
+          "count": 47,
+          "pct": 15.1
+        },
+        {
+          "name": "직원 응대 불만",
+          "count": 39,
+          "pct": 12.5
+        },
+        {
+          "name": "시설 고장·파손",
+          "count": 33,
+          "pct": 10.6
+        },
+        {
+          "name": "칭찬·감사",
+          "count": 30,
+          "pct": 9.6
+        },
+        {
+          "name": "안내 정보 부족",
+          "count": 26,
+          "pct": 8.3
+        },
+        {
+          "name": "청결 관리 미흡",
+          "count": 21,
+          "pct": 6.7
+        },
+        {
+          "name": "대기시간 지연",
+          "count": 17,
+          "pct": 5.4
+        }
+      ],
+      "negativeShare": {
+        "count": 82,
+        "pct": 26.3
+      },
+      "paymentShare": {
+        "count": 61,
+        "pct": 19.6
+      },
+      "praiseShare": {
+        "count": 30,
+        "pct": 9.6
+      },
+      "transferShare": {
+        "count": 30,
+        "pct": 9.6
+      },
+      "sla": {
+        "computable": 309,
+        "total": 312,
+        "medianDays": 3,
+        "within14Pct": 97.8,
+        "onTimePct": 96.5
+      }
+    },
+    "2024": {
+      "total": 240,
+      "byBonbu": [
+        {
+          "name": "본사",
+          "count": 96,
+          "pct": 40.0
+        },
+        {
+          "name": "제1지역본부",
+          "count": 62,
+          "pct": 25.8
+        },
+        {
+          "name": "제2지역본부",
+          "count": 48,
+          "pct": 20.0
+        },
+        {
+          "name": "제3지역본부",
+          "count": 34,
+          "pct": 14.2
+        }
+      ],
+      "byField": [
+        {
+          "name": "시설이용",
+          "count": 68,
+          "pct": 28.3,
+          "estimated": false
+        },
+        {
+          "name": "결제·요금",
+          "count": 54,
+          "pct": 22.5,
+          "estimated": false
+        },
+        {
+          "name": "직원응대",
+          "count": 41,
+          "pct": 17.1,
+          "estimated": false
+        },
+        {
+          "name": "안내·정보",
+          "count": 33,
+          "pct": 13.8,
+          "estimated": false
+        },
+        {
+          "name": "환경·청결",
+          "count": 26,
+          "pct": 10.8,
+          "estimated": false
+        },
+        {
+          "name": "기타",
+          "count": 18,
+          "pct": 7.5,
+          "estimated": false
+        }
+      ],
+      "byType1": [
+        {
+          "name": "문의",
+          "count": 108,
+          "pct": 45.0
+        },
+        {
+          "name": "불만",
+          "count": 62,
+          "pct": 25.8
+        },
+        {
+          "name": "건의",
+          "count": 34,
+          "pct": 14.2
+        },
+        {
+          "name": "칭찬",
+          "count": 24,
+          "pct": 10.0
+        },
+        {
+          "name": "신고",
+          "count": 8,
+          "pct": 3.3
+        },
+        {
+          "name": "기타",
+          "count": 4,
+          "pct": 1.7
+        }
+      ],
+      "byType2": [
+        {
+          "name": "매장이용불편",
+          "count": 26,
+          "pct": 10.8
+        },
+        {
+          "name": "결제오류",
+          "count": 24,
+          "pct": 10.0
+        },
+        {
+          "name": "환불지연",
+          "count": 19,
+          "pct": 7.9
+        },
+        {
+          "name": "응대불친절",
+          "count": 17,
+          "pct": 7.1
+        },
+        {
+          "name": "시설고장",
+          "count": 15,
+          "pct": 6.2
+        },
+        {
+          "name": "청결불량",
+          "count": 12,
+          "pct": 5.0
+        },
+        {
+          "name": "안내부족",
+          "count": 11,
+          "pct": 4.6
+        },
+        {
+          "name": "대기시간",
+          "count": 9,
+          "pct": 3.8
+        }
+      ],
+      "byCompletion": [
+        {
+          "name": "참고안내",
+          "count": 142,
+          "pct": 59.2
+        },
+        {
+          "name": "시정조치",
+          "count": 58,
+          "pct": 24.2
+        },
+        {
+          "name": "소관이관",
+          "count": 22,
+          "pct": 9.2
+        },
+        {
+          "name": "취하",
+          "count": 12,
+          "pct": 5.0
+        },
+        {
+          "name": "기타",
+          "count": 6,
+          "pct": 2.5
+        }
+      ],
+      "topStations": [
+        {
+          "name": "예시역 A",
+          "count": 22,
+          "pct": 9.2,
+          "verified": true,
+          "topField": "시설이용"
+        },
+        {
+          "name": "예시역 B",
+          "count": 18,
+          "pct": 7.5,
+          "verified": true,
+          "topField": "결제·요금"
+        },
+        {
+          "name": "예시역 C",
+          "count": 16,
+          "pct": 6.7,
+          "verified": true,
+          "topField": "직원응대"
+        },
+        {
+          "name": "예시역 D",
+          "count": 14,
+          "pct": 5.8,
+          "verified": true,
+          "topField": "안내·정보"
+        },
+        {
+          "name": "예시역 E",
+          "count": 13,
+          "pct": 5.4,
+          "verified": true,
+          "topField": "시설이용"
+        },
+        {
+          "name": "예시역 F",
+          "count": 11,
+          "pct": 4.6,
+          "verified": true,
+          "topField": "결제·요금"
+        },
+        {
+          "name": "예시역 G",
+          "count": 10,
+          "pct": 4.2,
+          "verified": true,
+          "topField": "직원응대"
+        },
+        {
+          "name": "예시역 H",
+          "count": 9,
+          "pct": 3.8,
+          "verified": true,
+          "topField": "안내·정보"
+        },
+        {
+          "name": "예시역 I",
+          "count": 8,
+          "pct": 3.3,
+          "verified": true,
+          "topField": "시설이용"
+        },
+        {
+          "name": "예시역 J",
+          "count": 7,
+          "pct": 2.9,
+          "verified": true,
+          "topField": "결제·요금"
+        },
+        {
+          "name": "예시역 K",
+          "count": 6,
+          "pct": 2.5,
+          "verified": true,
+          "topField": "직원응대"
+        },
+        {
+          "name": "예시역 L",
+          "count": 5,
+          "pct": 2.1,
+          "verified": true,
+          "topField": "안내·정보"
+        }
+      ],
+      "stationCoveragePct": 72.5,
+      "topBrands": [
+        {
+          "name": "예시매장 A",
+          "count": 46,
+          "pct": 19.2
+        },
+        {
+          "name": "예시매장 B",
+          "count": 38,
+          "pct": 15.8
+        },
+        {
+          "name": "예시매장 C",
+          "count": 31,
+          "pct": 12.9
+        },
+        {
+          "name": "예시매장 D",
+          "count": 25,
+          "pct": 10.4
+        },
+        {
+          "name": "예시매장 E",
+          "count": 19,
+          "pct": 7.9
+        },
+        {
+          "name": "예시매장 F",
+          "count": 14,
+          "pct": 5.8
+        }
+      ],
+      "repeatIssues": [
+        {
+          "name": "결제·환불 오류",
+          "count": 43,
+          "pct": 17.9
+        },
+        {
+          "name": "매장 이용 불편",
+          "count": 38,
+          "pct": 15.8
+        },
+        {
+          "name": "직원 응대 불만",
+          "count": 31,
+          "pct": 12.9
+        },
+        {
+          "name": "시설 고장·파손",
+          "count": 26,
+          "pct": 10.8
+        },
+        {
+          "name": "칭찬·감사",
+          "count": 24,
+          "pct": 10.0
+        },
+        {
+          "name": "안내 정보 부족",
+          "count": 21,
+          "pct": 8.8
+        },
+        {
+          "name": "청결 관리 미흡",
+          "count": 17,
+          "pct": 7.1
+        },
+        {
+          "name": "대기시간 지연",
+          "count": 13,
+          "pct": 5.4
+        }
+      ],
+      "negativeShare": {
+        "count": 62,
+        "pct": 25.8
+      },
+      "paymentShare": {
+        "count": 43,
+        "pct": 17.9
+      },
+      "praiseShare": {
+        "count": 24,
+        "pct": 10.0
+      },
+      "transferShare": {
+        "count": 22,
+        "pct": 9.2
+      },
+      "sla": {
+        "computable": 238,
+        "total": 240,
+        "medianDays": 4,
+        "within14Pct": 96.6,
+        "onTimePct": 95.4
+      }
+    }
+  }
+}

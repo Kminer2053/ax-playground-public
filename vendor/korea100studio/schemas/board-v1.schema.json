@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/hosungseo/korea100studio/schemas/board-v1.schema.json",
+  "type": "object",
+  "required": ["schema_version", "title", "lanes", "stages", "nodes", "edges"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "subtitle": { "type": "string" },
+    "profile": { "type": "string", "minLength": 1 },
+    "lanes": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "stages": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "lane", "stage", "label"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "lane": { "type": "string", "minLength": 1 },
+          "stage": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "emphasis": { "enum": ["lead", "key", "bottleneck", "loop", "normal"] },
+          "note": { "type": "string" },
+          "refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["source"],
+              "properties": { "source": { "type": "string" }, "note": { "type": "string" } },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source", "target"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "source": { "type": "string", "minLength": 1 },
+          "target": { "type": "string", "minLength": 1 },
+          "type": { "enum": ["sequence", "message", "loop"] },
+          "label": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

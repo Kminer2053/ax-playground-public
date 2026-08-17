@@ -1,0 +1,102 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/frontend/node_modules
+/frontend/dist
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# 서버 운영(배포·재시작) 로그 — /api/admin/ops
+/logs/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# 사용자 업로드 파일 (P4 라이브러리 — 코드 아님)
+/public/uploads
+
+# rhwp WASM — 폐쇄망 자체완결을 위해 리포에 커밋(public/rhwp_bg.wasm).
+# (빌드 시 scripts/copy-wasm.mjs 가 node_modules에서 재복사도 하지만, 오프라인 안전망으로 동봉)
+
+# 로컬 OCR dev venv (RapidOCR) — 타깃에서 오프라인 휠로 생성
+/tools/ocr/.venv
+
+# Python bytecode 캐시 (HWPX/OCR 스크립트 실행 시 생성)
+__pycache__/
+*.pyc
+
+# 오프라인 번들 산출물 — 연결된 머신에서 조립하는 대용량 바이너리(node_modules/OCR/mongod/ollama). 비커밋.
+/infra/offline/bundle/
+/infra/offline/bundle-win/
+/infra/offline/*.tgz
+/infra/offline/*.tar.gz
+/infra/offline/*.zip
+/infra/offline/*.exe
+/infra/offline/*.bundle
+
+# 로컬 전용 — 커밋 금지(DB 덤프·작업 인수인계·도구 설정)
+/backups/regulations-*.json
+/backups/mongodump-*/
+/data/mongo-snapshot/rag-backup-*/
+/data/mongo-snapshot/rag-update-*/
+
+# 법령 적재용 md — data/laws/raw(법제처 원본)에서 재생성되는 중간 산출물이고,
+# 최종 결과는 시드 덤프에 이미 담긴다. 재생성: node src/scripts/convert-laws-to-md.mjs
+/data/laws/md/
+
+# 시드 제외 컬렉션 — 앱이 읽지 않는데 실사용 흔적(실명·부서·이메일)이 남는다.
+#  users        : 무로그인 구조라 런타임 참조 없음(db/status의 건수 표시, 호출처 없는 awardPoints뿐)
+#  salesorders  : 앱 코드 참조 0
+#  lawconsults  : 모델 파일도 코드 참조도 없는 고아 컬렉션
+/data/mongo-snapshot/*/*/users.bson
+/data/mongo-snapshot/*/*/users.metadata.json
+/data/mongo-snapshot/*/*/salesorders.bson
+/data/mongo-snapshot/*/*/salesorders.metadata.json
+/data/mongo-snapshot/*/*/lawconsults.bson
+/data/mongo-snapshot/*/*/lawconsults.metadata.json
+/HANDOFF.md
+/.claude/
+/data/benchmark/results/
+
+# 대외비 — 기관 내부 서버 환경 명세서류(서버 IP·포트·패키지 버전·방화벽 정책). 절대 커밋/푸시 금지.
+/docs/*서버환경명세서*
+/backups/table-classify-*
+/backups/table-gold-*.json
+/backups/ab-*
+
+# 벤더 CLI 의존성은 루트 node_modules로 해결(ajv ^8)
+/vendor/*/node_modules/
