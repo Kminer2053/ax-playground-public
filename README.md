@@ -19,9 +19,9 @@
 
 **[🎬 시연 영상](docs/demo.mp4)**　·　**[📖 도입 가이드](docs/ADOPTION_GUIDE.md)**　·　**[🚀 빠른 시작](#빠른-시작-로컬-개발)**　·　**[🏆 실제 사례](#실제-운영-사례)**
 
-[![AX Playground — 폐쇄망 생성형 AI 업무 플랫폼](docs/assets/showcase-main.jpg)](docs/demo.mp4)
+[![AX Playground 기능 시연](docs/assets/hero.gif)](docs/demo.mp4)
 
-<sub>▲ 첫 화면은 놀이공원 지도 — 건물 하나가 기능 하나. 이미지를 누르면 <b>기능 시연 영상(2분 53초)</b>이 재생됩니다.</sub>
+<sub>▲ 실제 동작 하이라이트 — 홈 지도 · 지식검색+지식그래프 · 광고심의 · 전사 성과공유. 누르면 <b>전체 시연 영상(2분 53초)</b>이 재생됩니다.</sub>
 
 </div>
 
